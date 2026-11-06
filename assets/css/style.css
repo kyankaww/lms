@@ -33,7 +33,6 @@ a {
     text-decoration: none;
 }
 
-/* NAVBAR */
 
 .navbar {
     padding: 14px 0;
@@ -66,7 +65,6 @@ a {
     color: var(--brand);
 }
 
-/* BUTTON */
 
 .btn {
     border-radius: 11px;
@@ -89,7 +87,6 @@ a {
     border-color: #cbd5fb;
 }
 
-/* HERO */
 
 .hero-section {
     background:
@@ -121,7 +118,6 @@ a {
     line-height: 1.8;
 }
 
-/* STATISTIK */
 
 .mini-stat {
     display: flex;
@@ -140,7 +136,6 @@ a {
     font-size: 0.78rem;
 }
 
-/* KARTU HERO */
 
 .hero-card {
     padding: 28px;
@@ -165,7 +160,6 @@ a {
     background: #3fb982;
 }
 
-/* ILUSTRASI HERO */
 
 .hero-illustration {
     position: relative;
@@ -248,7 +242,6 @@ a {
     left: 0;
 }
 
-/* SECTION */
 
 .section-padding {
     padding: 82px 0;
@@ -264,7 +257,6 @@ a {
     font-size: clamp(1.8rem, 4vw, 2.6rem);
 }
 
-/* KARTU PROGRAM */
 
 .program-card {
     height: 100%;
@@ -312,7 +304,6 @@ a {
     font-weight: 800;
 }
 
-/* TENTANG */
 
 .bg-soft {
     background: var(--soft);
@@ -347,7 +338,6 @@ a {
     font-weight: 800;
 }
 
-/* CTA KONTAK */
 
 .contact-banner {
     display: flex;
@@ -364,7 +354,6 @@ a {
     font-size: clamp(1.6rem, 4vw, 2.4rem);
 }
 
-/* FOOTER */
 
 .site-footer {
     padding: 24px 0;
@@ -372,7 +361,6 @@ a {
     font-size: 0.88rem;
 }
 
-/* HALAMAN FORM */
 
 .page-shell {
     min-height: 70vh;
@@ -411,7 +399,6 @@ a {
     font-size: 0.9rem;
 }
 
-/* PENGUMUMAN */
 
 .announcement-card {
     height: 100%;
@@ -434,7 +421,6 @@ a {
     line-height: 1.7;
 }
 
-/* KONTAK */
 
 .contact-info-grid {
     display: grid;
@@ -467,7 +453,6 @@ a {
     word-break: break-word;
 }
 
-/* AKSESIBILITAS */
 
 a:focus-visible,
 button:focus-visible,
@@ -489,7 +474,6 @@ textarea:focus-visible {
     }
 }
 
-/* RESPONSIVE */
 
 @media (max-width: 991.98px) {
     .contact-info-grid {

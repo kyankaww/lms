@@ -8,10 +8,8 @@
 </head>
 <body class="admin-body" data-page-access="admin">
 
-  <!-- Sidebar Overlay (Mobile) -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Sidebar -->
   <aside class="admin-sidebar" id="adminSidebar">
     <a href="dashboard.html" class="sidebar-brand">
       <span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span>
@@ -51,9 +49,7 @@
     </div>
   </aside>
 
-  <!-- Main Content -->
   <div class="admin-main">
-    <!-- Header -->
     <header class="admin-header">
       <button class="sidebar-toggle" id="sidebarToggle" type="button">Menu</button>
       <h1 class="admin-header-title">Dashboard</h1>
@@ -62,18 +58,14 @@
       </div>
     </header>
 
-    <!-- Content -->
     <div class="admin-content">
-      <!-- Alert Container -->
       <div id="alertContainer"></div>
 
-      <!-- Greeting -->
       <div style="margin-bottom: 24px;">
         <h2 style="font-size: 1.3rem; font-weight: 700; margin: 0 0 4px;">Selamat datang, Admin</h2>
         <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Berikut ringkasan data terkini dari sistem PKBM & LPK.</p>
       </div>
 
-      <!-- Stats -->
       <div class="stat-grid">
         <div class="stat-card">
           <div class="stat-card-icon stat-icon-primary">Dftr</div>
@@ -132,10 +124,8 @@
         </div>
       </div>
 
-      <!-- Two Column Layout -->
       <div class="dashboard-grid">
 
-        <!-- Recent Registrations -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3 class="admin-card-title">Pendaftaran Terbaru</h3>
@@ -151,7 +141,6 @@
           </div>
         </div>
 
-        <!-- Recent Payments -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3 class="admin-card-title">Pembayaran Terkini</h3>
@@ -167,7 +156,6 @@
           </div>
         </div>
 
-        <!-- Students by Program -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3 class="admin-card-title">Peserta per Program</h3>
@@ -182,7 +170,6 @@
           </div>
         </div>
 
-        <!-- Quick Actions -->
         <div class="admin-card">
           <div class="admin-card-header">
             <h3 class="admin-card-title">Aksi Cepat</h3>
@@ -231,7 +218,6 @@
         var students = data.students || [];
         var announcements = data.announcements || [];
 
-        // Stats
         document.getElementById('statTotal').textContent = registrations.length;
         document.getElementById('statPrograms').textContent = programs.filter(function (p) { return p.active; }).length;
         document.getElementById('statAnnouncements').textContent = announcements.filter(function (a) { return a.active; }).length;
@@ -247,11 +233,9 @@
         document.getElementById('statRejected').textContent = rejected;
         document.getElementById('statUnpaid').textContent = unpaid;
 
-        // Pending badge in sidebar
         var badge = document.getElementById('pendingBadge');
         if (badge) badge.textContent = pending;
 
-        // Recent Registrations
         var recentList = document.getElementById('recentRegistrations');
         var recentRegs = registrations
           .slice()
@@ -279,7 +263,6 @@
           });
         }
 
-        // Recent Payments
         var recentPaymentList = document.getElementById('recentPayments');
         var payments = data.payments || [];
         var recentPayments = payments
@@ -303,7 +286,6 @@
           });
         }
 
-        // Students by Program
         var progList = document.getElementById('studentsByProgram');
         var activePrograms = programs.filter(function (p) { return p.active; });
         if (activePrograms.length > 0) {

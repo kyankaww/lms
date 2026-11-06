@@ -284,7 +284,6 @@
             return;
           }
 
-          // Pastikan tagihan tersimpan pada koleksi payments.
           var payment = window.Workflow.ensurePaymentRecord(
             result.allData,
             registration
@@ -294,7 +293,6 @@
           notFound.classList.add("d-none");
           content.classList.remove("d-none");
 
-          // Update informasi rekening dari websiteContent admin
           var websiteContent = window.Workflow.getWebsiteContent(result.allData);
           var bank = websiteContent.paymentBank || "BCA";
           var acc = websiteContent.paymentAccount || "1234567890";

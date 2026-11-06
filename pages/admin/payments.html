@@ -108,7 +108,6 @@
     </div>
   </div>
 
-  <!-- Detail Modal -->
   <div class="admin-modal-overlay" id="paymentModal">
     <div class="admin-modal" style="max-width: 600px;">
       <div class="admin-modal-header">
@@ -136,7 +135,6 @@
         var allData = window.DemoStorage.getAll();
         var registrations = allData.registrations || [];
 
-        // Sinkronkan data payments
         registrations.forEach(function (reg) {
           window.Workflow.ensurePaymentRecord(allData, reg);
         });

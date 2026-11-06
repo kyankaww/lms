@@ -243,7 +243,6 @@
           return;
         }
 
-        // Halaman ini hanya menampilkan pendaftaran milik akun yang sedang login.
         const currentEmail = window.Auth
           ? window.Auth.getCurrentUser().email
           : (localStorage.getItem("registerEmail") || "")

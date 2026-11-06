@@ -10,7 +10,6 @@
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Sidebar -->
   <aside class="admin-sidebar" id="adminSidebar">
     <a href="dashboard.html" class="sidebar-brand">
       <span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span>
@@ -55,7 +54,6 @@
     <div class="admin-content">
       <div id="alertContainer"></div>
 
-      <!-- Stats Row -->
       <div class="stat-grid stat-grid-4">
         <div class="stat-card">
           <div class="stat-card-label">Total Pendaftaran</div>
@@ -75,7 +73,6 @@
         </div>
       </div>
 
-      <!-- Table Card -->
       <div class="admin-card">
         <div class="admin-card-header">
           <h3 class="admin-card-title">Data Pendaftaran</h3>
@@ -121,7 +118,6 @@
     </div>
   </div>
 
-  <!-- Detail Modal -->
   <div class="admin-modal-overlay" id="detailModal">
     <div class="admin-modal" style="max-width: 780px;">
       <div class="admin-modal-header">
@@ -129,10 +125,8 @@
         <button class="admin-modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="admin-modal-body" id="detailContent" style="max-height: 75vh; overflow-y: auto;">
-        <!-- Filled by JS -->
       </div>
       <div class="admin-modal-footer" id="detailFooter">
-        <!-- Filled by JS -->
       </div>
     </div>
   </div>
@@ -153,7 +147,6 @@
       var perPage = 10;
       var currentRegId = null;
 
-      // Populate program filter
       var programs = window.DemoStorage.getCollection('programs');
       var filterProgram = document.getElementById('filterProgram');
       programs.forEach(function (p) {
@@ -232,7 +225,6 @@
         });
       }
 
-      // Detail Modal
       window.showDetail = function (id) {
         var allData = window.DemoStorage.getAll();
         var reg = (allData.registrations || []).find(function (r) { return r.id === id; });
@@ -246,7 +238,6 @@
           return c.programId === reg.programId;
         });
 
-        // Cari apakah sudah ada data siswa terkait
         var student = (allData.students || []).find(function (s) {
           return s.registrationId === reg.id || (s.email && s.email.toLowerCase() === (reg.email || '').toLowerCase() && s.programId === reg.programId);
         });
@@ -353,7 +344,6 @@
         var classSelect = document.getElementById('modalClass');
         var selectedClassId = classSelect ? classSelect.value : '';
 
-        // Record history
         if (!Array.isArray(reg.statusHistory)) reg.statusHistory = [];
         var now = new Date().toISOString();
         if (reg.status !== newStatus) {
@@ -379,7 +369,6 @@
         reg.paymentStatus = newPayment;
         reg.adminNotes = notes;
 
-        // Terima pendaftaran -> buat data siswa resmi dan tagihan pembayaran.
         if (newStatus === 'Diterima' && window.Workflow) {
           var res = window.Workflow.acceptRegistration(allData, reg, selectedClassId);
           if (res && res.student && selectedClassId) {
@@ -401,12 +390,10 @@
         currentRegId = null;
       };
 
-      // Close on overlay click
       document.getElementById('detailModal').addEventListener('click', function (e) {
         if (e.target === this) closeModal();
       });
 
-      // Listeners
       document.getElementById('searchInput').addEventListener('input', function () { currentPage = 1; renderTable(); });
       document.getElementById('filterStatus').addEventListener('change', function () { currentPage = 1; renderTable(); });
       document.getElementById('filterProgram').addEventListener('change', function () { currentPage = 1; renderTable(); });
