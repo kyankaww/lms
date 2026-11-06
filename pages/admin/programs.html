@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kelola Program — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand"><span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span></a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="sidebar-user-avatar">A</div><div class="sidebar-user-info"><div class="sidebar-user-name">Admin Demo</div><div class="sidebar-user-role">Administrator</div></div></div></div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+      <h1 class="admin-header-title">Kelola Program</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAddModal()">+ Tambah Program</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Daftar Program</h3>
+          <div class="filter-bar">
+            <select class="admin-select" id="filterType" style="width:140px;">
+              <option value="">Semua Tipe</option>
+              <option value="PKBM">PKBM</option>
+              <option value="LPK">LPK</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Program</th>
+                <th>Tipe</th>
+                <th>Jenjang</th>
+                <th>Biaya Pendaftaran</th>
+                <th>Biaya Pendidikan</th>
+                <th>Status</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="admin-modal-overlay" id="programModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Tambah Program</h3>
+        <button class="admin-modal-close" onclick="closeProgramModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-group">
+          <label class="admin-label">Nama Program *</label>
+          <input type="text" class="admin-input" id="inputName" required />
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label">Tipe *</label>
+            <select class="admin-select" id="inputType">
+              <option value="PKBM">PKBM</option>
+              <option value="LPK">LPK</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="admin-label">Jenjang</label>
+            <input type="text" class="admin-input" id="inputLevel" placeholder="Setara SD, Pelatihan..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="admin-label">Deskripsi</label>
+          <textarea class="admin-textarea" id="inputDesc"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="admin-label">Persyaratan</label>
+          <textarea class="admin-textarea" id="inputReqs" placeholder="Persyaratan program..."></textarea>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label">Biaya Pendaftaran (Rp)</label>
+            <input type="number" class="admin-input" id="inputRegFee" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="admin-label">Biaya Pendidikan (Rp)</label>
+            <input type="number" class="admin-input" id="inputTuitionFee" min="0" value="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="admin-label">Status</label>
+          <select class="admin-select" id="inputActive">
+            <option value="true">Aktif</option>
+            <option value="false">Tidak Aktif</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeProgramModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveProgram()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var editingId = null;
+
+      function renderTable() {
+        var programs = window.DemoStorage.getCollection('programs');
+        var filterType = document.getElementById('filterType').value;
+
+        var filtered = programs.filter(function (p) {
+          return !filterType || p.category === filterType;
+        });
+
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada program.</td></tr>';
+          return;
+        }
+
+        filtered.forEach(function (prog) {
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td><div class="cell-main">' + AdminUI.escapeHTML(prog.name) + '</div><div class="cell-sub">' + AdminUI.escapeHTML(prog.description || '').substring(0, 60) + '</div></td>' +
+            '<td><span class="badge-status ' + (prog.category === 'PKBM' ? 'badge-process' : 'badge-approved') + '">' + prog.category + '</span></td>' +
+            '<td>' + AdminUI.escapeHTML(prog.level || '-') + '</td>' +
+            '<td>' + AdminUI.formatCurrency(prog.registrationFee || 0) + '</td>' +
+            '<td>' + AdminUI.formatCurrency(prog.tuitionFee || 0) + '</td>' +
+            '<td>' + (prog.active ? '<span class="badge-status badge-active"><span class="badge-dot"></span>Aktif</span>' : '<span class="badge-status badge-inactive"><span class="badge-dot"></span>Tidak Aktif</span>') + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="editProgram(\'' + prog.id + '\')" style="margin-right:4px;">Edit</button>' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="toggleActive(\'' + prog.id + '\')">' + (prog.active ? 'Nonaktifkan' : 'Aktifkan') + '</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.showAddModal = function () {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Program';
+        document.getElementById('inputName').value = '';
+        document.getElementById('inputType').value = 'PKBM';
+        document.getElementById('inputLevel').value = '';
+        document.getElementById('inputDesc').value = '';
+        document.getElementById('inputReqs').value = '';
+        document.getElementById('inputRegFee').value = '0';
+        document.getElementById('inputTuitionFee').value = '0';
+        document.getElementById('inputActive').value = 'true';
+        document.getElementById('programModal').classList.add('show');
+      };
+
+      window.editProgram = function (id) {
+        var programs = window.DemoStorage.getCollection('programs');
+        var prog = programs.find(function (p) { return p.id === id; });
+        if (!prog) return;
+
+        editingId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Program';
+        document.getElementById('inputName').value = prog.name || '';
+        document.getElementById('inputType').value = prog.category || 'PKBM';
+        document.getElementById('inputLevel').value = prog.level || '';
+        document.getElementById('inputDesc').value = prog.description || '';
+        document.getElementById('inputReqs').value = prog.requirements || '';
+        document.getElementById('inputRegFee').value = prog.registrationFee || 0;
+        document.getElementById('inputTuitionFee').value = prog.tuitionFee || 0;
+        document.getElementById('inputActive').value = String(prog.active !== false);
+        document.getElementById('programModal').classList.add('show');
+      };
+
+      window.saveProgram = function () {
+        var name = document.getElementById('inputName').value.trim();
+        if (!name) { AdminUI.showAlert('Nama program wajib diisi.', 'danger'); return; }
+
+        var allData = window.DemoStorage.getAll();
+        var programs = allData.programs || [];
+
+        if (editingId) {
+          var prog = programs.find(function (p) { return p.id === editingId; });
+          if (prog) {
+            prog.name = name;
+            prog.category = document.getElementById('inputType').value;
+            prog.level = document.getElementById('inputLevel').value.trim();
+            prog.description = document.getElementById('inputDesc').value.trim();
+            prog.requirements = document.getElementById('inputReqs').value.trim();
+            prog.registrationFee = Number(document.getElementById('inputRegFee').value) || 0;
+            prog.tuitionFee = Number(document.getElementById('inputTuitionFee').value) || 0;
+            prog.active = document.getElementById('inputActive').value === 'true';
+          }
+        } else {
+          programs.push({
+            id: 'prog-' + Date.now(),
+            name: name,
+            category: document.getElementById('inputType').value,
+            level: document.getElementById('inputLevel').value.trim(),
+            description: document.getElementById('inputDesc').value.trim(),
+            requirements: document.getElementById('inputReqs').value.trim(),
+            registrationFee: Number(document.getElementById('inputRegFee').value) || 0,
+            tuitionFee: Number(document.getElementById('inputTuitionFee').value) || 0,
+            active: document.getElementById('inputActive').value === 'true'
+          });
+        }
+
+        allData.programs = programs;
+        window.DemoStorage.saveAll(allData);
+        closeProgramModal();
+        renderTable();
+        AdminUI.showAlert(editingId ? 'Program berhasil diperbarui.' : 'Program berhasil ditambahkan.', 'success');
+      };
+
+      window.toggleActive = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var prog = allData.programs.find(function (p) { return p.id === id; });
+        if (!prog) return;
+        prog.active = !prog.active;
+        window.DemoStorage.saveAll(allData);
+        renderTable();
+        AdminUI.showAlert('Status program diperbarui.', 'success');
+      };
+
+      window.closeProgramModal = function () {
+        document.getElementById('programModal').classList.remove('show');
+        editingId = null;
+      };
+
+      document.getElementById('programModal').addEventListener('click', function (e) { if (e.target === this) closeProgramModal(); });
+      document.getElementById('filterType').addEventListener('change', renderTable);
+
+      renderTable();
+    })();
+  </script>
+</body>
+</html>

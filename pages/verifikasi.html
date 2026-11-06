@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verifikasi Email - PKBM & LPK</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+<link rel="stylesheet" href="../assets/css/style.css">
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+          <div class="text-center mb-3">
+            <span class="brand-mark mb-2" data-brand-mark>P</span>
+            <p class="small text-muted mb-0" data-brand-name>PKBM &amp; LPK</p>
+          </div>
+
+          <h4 class="mb-1 text-center">Verifikasi Email</h4>
+          <p class="text-muted text-center small mb-4">Langkah 2 dari 3</p>
+
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <p class="small mb-3">
+                Kode verifikasi telah dikirim ke
+                <strong id="emailDisplay">email</strong>.
+              </p>
+
+              <div id="alertArea"></div>
+
+              <form id="otpForm" novalidate>
+                <div class="mb-4">
+                  <label for="otpCode" class="form-label">Kode Verifikasi</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-lg text-center tracking-widest"
+                    id="otpCode"
+                    maxlength="6"
+                    inputmode="numeric"
+                    placeholder="______"
+                    required
+                    style="letter-spacing: 0.5em; font-weight: 600"
+                  />
+                  <div class="invalid-feedback">Masukkan 6 digit kode.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="btnVerify">
+                  Verifikasi
+                </button>
+              </form>
+
+              <hr />
+
+              <div class="text-center small">
+                <span id="countdownArea">
+                  Kirim ulang dalam <strong id="timer">60</strong> detik
+                </span>
+                <button class="btn btn-link btn-sm p-0 d-none" id="btnResend">
+                  Kirim ulang kode
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-center small mt-3">
+            <a href="registration.html">← Kembali ke Daftar</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+        <script src="../assets/js/mock-data.js"></script>
+        <script src="../assets/js/storage.js"></script>
+        <script src="../assets/js/branding.js"></script>
+        <script src="../assets/js/auth.js"></script>
+        <script src="../assets/js/app.js"></script>
+  </body>
+</html>

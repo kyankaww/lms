@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kehadiran — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Kehadiran Peserta</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAttendanceModal()">+ Input Kehadiran</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="stat-grid stat-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Catatan</div>
+          <div class="stat-card-value" id="statTotal">0</div>
+          <div class="stat-card-sub">Sesuai filter</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Hadir</div>
+          <div class="stat-card-value" id="statPresent" style="color:var(--admin-success)">0</div>
+          <div class="stat-card-sub">Kehadiran tercatat</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Izin / Sakit</div>
+          <div class="stat-card-value" id="statExcused" style="color:var(--admin-warning)">0</div>
+          <div class="stat-card-sub">Dengan keterangan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Alpa</div>
+          <div class="stat-card-value" id="statAbsent" style="color:var(--admin-danger)">0</div>
+          <div class="stat-card-sub">Tanpa keterangan</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Rekap Kehadiran</h3>
+          <div class="filter-bar">
+            <select class="admin-select" id="filterClass" style="width:210px;">
+              <option value="">Semua Kelas</option>
+            </select>
+            <input type="date" class="admin-input" id="filterDate" style="width:170px;" />
+            <button class="btn-admin btn-admin-outline btn-admin-sm" onclick="clearFilters()">Reset Filter</button>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Kelas</th>
+                <th>Peserta</th>
+                <th>Status</th>
+                <th>Catatan</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-modal-overlay" id="attendanceModal">
+    <div class="admin-modal" style="max-width:680px;">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title">Input Kehadiran</h3>
+        <button class="admin-modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label" for="inputClass">Kelas *</label>
+            <select class="admin-select" id="inputClass">
+              <option value="">Pilih kelas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="admin-label" for="inputDate">Tanggal *</label>
+            <input type="date" class="admin-input" id="inputDate" />
+          </div>
+        </div>
+
+        <p class="text-muted fs-sm mb-2">Tandai kehadiran setiap peserta. Data yang sudah ada akan diperbarui.</p>
+
+        <div id="studentAttendanceList"></div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveAttendance()">Simpan Kehadiran</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var STATUSES = ['Hadir', 'Izin', 'Sakit', 'Alpa'];
+
+      function todayIso() {
+        var now = new Date();
+        var offset = now.getTimezoneOffset();
+        return new Date(now.getTime() - offset * 60000).toISOString().slice(0, 10);
+      }
+
+      function getData() {
+        return window.DemoStorage.getAll();
+      }
+
+      function getClassName(id) {
+        var kelas = (getData().classes || []).find(function (item) { return item.id === id; });
+        return kelas ? kelas.name : '-';
+      }
+
+      function getStudentName(id) {
+        var student = (getData().students || []).find(function (item) { return item.id === id; });
+        return student ? student.fullName || student.name || '-' : '-';
+      }
+
+      function statusBadge(status) {
+        var cls = status === 'Hadir' ? 'badge-approved' :
+          status === 'Alpa' ? 'badge-rejected' : 'badge-pending';
+
+        return '<span class="badge-status ' + cls + '"><span class="badge-dot"></span>' +
+          AdminUI.escapeHTML(status) + '</span>';
+      }
+
+      function populateClassSelects() {
+        var data = getData();
+        var classes = data.classes || [];
+        var filterClass = document.getElementById('filterClass');
+        var inputClass = document.getElementById('inputClass');
+
+        filterClass.innerHTML = '<option value="">Semua Kelas</option>';
+        inputClass.innerHTML = '<option value="">Pilih kelas</option>';
+
+        classes.forEach(function (kelas) {
+          var option = document.createElement('option');
+          option.value = kelas.id;
+          option.textContent = kelas.name;
+          filterClass.appendChild(option);
+
+          var option2 = document.createElement('option');
+          option2.value = kelas.id;
+          option2.textContent = kelas.name;
+          inputClass.appendChild(option2);
+        });
+      }
+
+      function updateStats(records) {
+        document.getElementById('statTotal').textContent = records.length;
+        document.getElementById('statPresent').textContent = records.filter(function (item) { return item.status === 'Hadir'; }).length;
+        document.getElementById('statExcused').textContent = records.filter(function (item) { return item.status === 'Izin' || item.status === 'Sakit'; }).length;
+        document.getElementById('statAbsent').textContent = records.filter(function (item) { return item.status === 'Alpa'; }).length;
+      }
+
+      function render() {
+        var data = getData();
+        var filterClass = document.getElementById('filterClass').value;
+        var filterDate = document.getElementById('filterDate').value;
+
+        var records = (data.attendance || []).filter(function (item) {
+          return (!filterClass || item.classId === filterClass) &&
+            (!filterDate || item.date === filterDate);
+        });
+
+        records.sort(function (a, b) {
+          return String(b.date).localeCompare(String(a.date)) ||
+            getStudentName(a.studentId).localeCompare(getStudentName(b.studentId));
+        });
+
+        updateStats(records);
+
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (records.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada catatan kehadiran untuk filter ini.</td></tr>';
+          return;
+        }
+
+        records.forEach(function (record) {
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td>' + AdminUI.formatDate(record.date) + '</td>' +
+            '<td>' + AdminUI.escapeHTML(getClassName(record.classId)) + '</td>' +
+            '<td class="cell-main">' + AdminUI.escapeHTML(getStudentName(record.studentId)) + '</td>' +
+            '<td>' + statusBadge(record.status || 'Hadir') + '</td>' +
+            '<td class="cell-sub">' + AdminUI.escapeHTML(record.note || '-') + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="deleteAttendance(\'' + record.id + '\')">Hapus</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      function renderStudentRows() {
+        var classId = document.getElementById('inputClass').value;
+        var date = document.getElementById('inputDate').value;
+        var container = document.getElementById('studentAttendanceList');
+        var data = getData();
+
+        if (!classId) {
+          container.innerHTML = '<div class="empty-state" style="padding:24px;"><div class="empty-state-text">Pilih kelas untuk menampilkan peserta.</div></div>';
+          return;
+        }
+
+        var students = (data.students || []).filter(function (student) {
+          return student.classId === classId && student.status !== 'inactive';
+        });
+
+        if (students.length === 0) {
+          container.innerHTML = '<div class="empty-state" style="padding:24px;"><div class="empty-state-text">Belum ada peserta aktif di kelas ini.</div></div>';
+          return;
+        }
+
+        var existing = (data.attendance || []).filter(function (item) {
+          return item.classId === classId && item.date === date;
+        });
+
+        var html = '<div class="attendance-list">';
+
+        students.forEach(function (student) {
+          var record = existing.find(function (item) { return item.studentId === student.id; });
+          var selectedStatus = record ? record.status : 'Hadir';
+
+          html +=
+            '<div class="attendance-row" data-student-id="' + AdminUI.escapeHTML(student.id) + '">' +
+              '<div class="attendance-name">' +
+                '<div class="cell-main">' + AdminUI.escapeHTML(student.fullName || student.name || '-') + '</div>' +
+                '<div class="cell-sub">' + AdminUI.escapeHTML(student.studentNumber || '') + '</div>' +
+              '</div>' +
+              '<select class="admin-select attendance-status">' +
+                STATUSES.map(function (status) {
+                  return '<option value="' + status + '"' + (status === selectedStatus ? ' selected' : '') + '>' + status + '</option>';
+                }).join('') +
+              '</select>' +
+              '<input type="text" class="admin-input attendance-note" placeholder="Catatan (opsional)" value="' + AdminUI.escapeHTML(record ? record.note || '' : '') + '" />' +
+            '</div>';
+        });
+
+        html += '</div>';
+        container.innerHTML = html;
+      }
+
+      window.showAttendanceModal = function () {
+        var data = getData();
+        var classes = data.classes || [];
+
+        document.getElementById('inputClass').value = classes.length > 0 ? classes[0].id : '';
+        document.getElementById('inputDate').value = todayIso();
+        renderStudentRows();
+        document.getElementById('attendanceModal').classList.add('show');
+      };
+
+      window.saveAttendance = function () {
+        var classId = document.getElementById('inputClass').value;
+        var date = document.getElementById('inputDate').value;
+
+        if (!classId) { AdminUI.showAlert('Kelas wajib dipilih.', 'danger'); return; }
+        if (!date) { AdminUI.showAlert('Tanggal wajib diisi.', 'danger'); return; }
+
+        var rows = document.querySelectorAll('#studentAttendanceList .attendance-row');
+
+        if (rows.length === 0) {
+          AdminUI.showAlert('Tidak ada peserta yang bisa dicatat pada kelas ini.', 'danger');
+          return;
+        }
+
+        var data = getData();
+        if (!Array.isArray(data.attendance)) data.attendance = [];
+
+        var now = new Date().toISOString();
+
+        rows.forEach(function (row) {
+          var studentId = row.getAttribute('data-student-id');
+          var status = row.querySelector('.attendance-status').value;
+          var note = row.querySelector('.attendance-note').value.trim();
+          var existing = data.attendance.find(function (item) {
+            return item.classId === classId && item.studentId === studentId && item.date === date;
+          });
+
+          if (existing) {
+            existing.status = status;
+            existing.note = note;
+            existing.recordedAt = now;
+          } else {
+            data.attendance.push({
+              id: 'att-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+              classId: classId,
+              studentId: studentId,
+              date: date,
+              status: status,
+              note: note,
+              recordedAt: now
+            });
+          }
+        });
+
+        window.DemoStorage.saveAll(data);
+        closeModal();
+        render();
+        AdminUI.showAlert('Kehadiran berhasil disimpan.', 'success');
+      };
+
+      window.deleteAttendance = function (id) {
+        if (!AdminUI.confirm('Hapus catatan kehadiran ini?')) return;
+
+        var data = getData();
+        data.attendance = (data.attendance || []).filter(function (item) { return item.id !== id; });
+        window.DemoStorage.saveAll(data);
+        render();
+        AdminUI.showAlert('Catatan kehadiran dihapus.', 'success');
+      };
+
+      window.clearFilters = function () {
+        document.getElementById('filterClass').value = '';
+        document.getElementById('filterDate').value = '';
+        render();
+      };
+
+      window.closeModal = function () {
+        document.getElementById('attendanceModal').classList.remove('show');
+      };
+
+      document.getElementById('inputClass').addEventListener('change', renderStudentRows);
+      document.getElementById('inputDate').addEventListener('change', renderStudentRows);
+      document.getElementById('filterClass').addEventListener('change', render);
+      document.getElementById('filterDate').addEventListener('change', render);
+      document.getElementById('attendanceModal').addEventListener('click', function (event) {
+        if (event.target === this) closeModal();
+      });
+
+      populateClassSelects();
+      render();
+    })();
+  </script>
+</body>
+</html>

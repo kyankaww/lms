@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pengumuman — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Pengumuman</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAddModal()">+ Buat Pengumuman</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Daftar Pengumuman</h3>
+          <div class="filter-bar">
+            <select class="admin-select" id="filterStatus" style="width:150px;">
+              <option value="">Semua Status</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">Tidak Aktif</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Judul</th>
+                <th>Ringkasan</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="admin-card-footer">
+          Pengumuman aktif akan tampil di halaman utama portal peserta.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-modal-overlay" id="announcementModal">
+    <div class="admin-modal" style="max-width:620px;">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Buat Pengumuman</h3>
+        <button class="admin-modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-group">
+          <label class="admin-label" for="inputTitle">Judul *</label>
+          <input type="text" class="admin-input" id="inputTitle" placeholder="Contoh: Jadwal Ujian Akhir Semester" />
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputBody">Isi Pengumuman *</label>
+          <textarea class="admin-textarea" id="inputBody" rows="6" placeholder="Tulis informasi lengkap untuk peserta..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputActive">Status Publikasi</label>
+          <select class="admin-select" id="inputActive">
+            <option value="true">Aktif — tampil di halaman utama</option>
+            <option value="false">Tidak Aktif — simpan sebagai arsip</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveAnnouncement()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var editingId = null;
+
+      function render() {
+        var allData = window.DemoStorage.getAll();
+        var announcements = (allData.announcements || []).slice();
+        var filter = document.getElementById('filterStatus').value;
+
+        if (filter === 'active') {
+          announcements = announcements.filter(function (item) { return item.active !== false; });
+        } else if (filter === 'inactive') {
+          announcements = announcements.filter(function (item) { return item.active === false; });
+        }
+
+        announcements.sort(function (a, b) {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (announcements.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada pengumuman.</td></tr>';
+          return;
+        }
+
+        announcements.forEach(function (announcement) {
+          var tr = document.createElement('tr');
+          var preview = String(announcement.body || '').slice(0, 90);
+
+          if (String(announcement.body || '').length > 90) {
+            preview += '…';
+          }
+
+          tr.innerHTML =
+            '<td class="cell-main">' + AdminUI.escapeHTML(announcement.title || '-') + '</td>' +
+            '<td class="cell-sub" style="max-width:280px;">' + AdminUI.escapeHTML(preview || '-') + '</td>' +
+            '<td>' + AdminUI.formatDate(announcement.createdAt) + '</td>' +
+            '<td>' + (announcement.active !== false ? '<span class="badge-status badge-active"><span class="badge-dot"></span>Aktif</span>' : '<span class="badge-status badge-inactive"><span class="badge-dot"></span>Tidak Aktif</span>') + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="editAnnouncement(\'' + announcement.id + '\')" style="margin-right:4px;">Edit</button>' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="toggleAnnouncement(\'' + announcement.id + '\')" style="margin-right:4px;">' + (announcement.active !== false ? 'Arsipkan' : 'Aktifkan') + '</button>' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="deleteAnnouncement(\'' + announcement.id + '\')">Hapus</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.showAddModal = function () {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Buat Pengumuman';
+        document.getElementById('inputTitle').value = '';
+        document.getElementById('inputBody').value = '';
+        document.getElementById('inputActive').value = 'true';
+        document.getElementById('announcementModal').classList.add('show');
+        document.getElementById('inputTitle').focus();
+      };
+
+      window.editAnnouncement = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var announcement = (allData.announcements || []).find(function (item) { return item.id === id; });
+
+        if (!announcement) return;
+
+        editingId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Pengumuman';
+        document.getElementById('inputTitle').value = announcement.title || '';
+        document.getElementById('inputBody').value = announcement.body || '';
+        document.getElementById('inputActive').value = String(announcement.active !== false);
+        document.getElementById('announcementModal').classList.add('show');
+      };
+
+      window.saveAnnouncement = function () {
+        var title = document.getElementById('inputTitle').value.trim();
+        var body = document.getElementById('inputBody').value.trim();
+
+        if (!title) { AdminUI.showAlert('Judul pengumuman wajib diisi.', 'danger'); return; }
+        if (!body) { AdminUI.showAlert('Isi pengumuman wajib diisi.', 'danger'); return; }
+
+        var allData = window.DemoStorage.getAll();
+        if (!Array.isArray(allData.announcements)) allData.announcements = [];
+
+        var now = new Date().toISOString();
+        var payload = {
+          title: title,
+          body: body,
+          active: document.getElementById('inputActive').value === 'true',
+          updatedAt: now
+        };
+
+        if (editingId) {
+          var announcement = allData.announcements.find(function (item) { return item.id === editingId; });
+          if (announcement) Object.assign(announcement, payload);
+        } else {
+          payload.id = 'ann-' + Date.now();
+          payload.createdAt = now.slice(0, 10);
+          allData.announcements.push(payload);
+        }
+
+        window.DemoStorage.saveAll(allData);
+        closeModal();
+        render();
+        AdminUI.showAlert(editingId ? 'Pengumuman diperbarui.' : 'Pengumuman dibuat.', 'success');
+      };
+
+      window.toggleAnnouncement = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var announcement = (allData.announcements || []).find(function (item) { return item.id === id; });
+
+        if (!announcement) return;
+
+        announcement.active = announcement.active === false;
+        announcement.updatedAt = new Date().toISOString();
+        window.DemoStorage.saveAll(allData);
+        render();
+        AdminUI.showAlert('Status pengumuman diperbarui.', 'success');
+      };
+
+      window.deleteAnnouncement = function (id) {
+        if (!AdminUI.confirm('Hapus pengumuman ini?')) return;
+
+        var allData = window.DemoStorage.getAll();
+        allData.announcements = (allData.announcements || []).filter(function (item) { return item.id !== id; });
+        window.DemoStorage.saveAll(allData);
+        render();
+        AdminUI.showAlert('Pengumuman dihapus.', 'success');
+      };
+
+      window.closeModal = function () {
+        document.getElementById('announcementModal').classList.remove('show');
+        editingId = null;
+      };
+
+      document.getElementById('filterStatus').addEventListener('change', render);
+      document.getElementById('announcementModal').addEventListener('click', function (event) {
+        if (event.target === this) closeModal();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

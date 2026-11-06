@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jadwal — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Kelola Jadwal</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAddModal()">+ Tambah Jadwal</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Daftar Jadwal Pelajaran</h3>
+          <div class="filter-bar">
+            <select class="admin-select" id="filterClass" style="width:210px;">
+              <option value="">Semua Kelas</option>
+            </select>
+            <select class="admin-select" id="filterDay" style="width:140px;">
+              <option value="">Semua Hari</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Hari</th>
+                <th>Waktu</th>
+                <th>Kelas</th>
+                <th>Mata Pelajaran</th>
+                <th>Pengajar</th>
+                <th>Ruang</th>
+                <th>Status</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-modal-overlay" id="scheduleModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Tambah Jadwal</h3>
+        <button class="admin-modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-group">
+          <label class="admin-label" for="inputClass">Kelas *</label>
+          <select class="admin-select" id="inputClass">
+            <option value="">Pilih kelas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputSubject">Mata Pelajaran *</label>
+          <select class="admin-select" id="inputSubject">
+            <option value="">Pilih mata pelajaran</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputTeacher">Pengajar</label>
+          <input type="text" class="admin-input" id="inputTeacher" placeholder="Nama pengajar" />
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label" for="inputDay">Hari *</label>
+            <select class="admin-select" id="inputDay"></select>
+          </div>
+          <div class="form-group">
+            <label class="admin-label" for="inputRoom">Ruang</label>
+            <input type="text" class="admin-input" id="inputRoom" placeholder="Ruang A1 / Lab" />
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label" for="inputStart">Jam Mulai *</label>
+            <input type="time" class="admin-input" id="inputStart" />
+          </div>
+          <div class="form-group">
+            <label class="admin-label" for="inputEnd">Jam Selesai *</label>
+            <input type="time" class="admin-input" id="inputEnd" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputActive">Status</label>
+          <select class="admin-select" id="inputActive">
+            <option value="true">Aktif</option>
+            <option value="false">Tidak Aktif</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveSchedule()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+      var editingId = null;
+
+      var allData = window.DemoStorage.getAll();
+      var classes = allData.classes || [];
+      var subjects = allData.subjects || [];
+
+      function populateStaticSelects() {
+        var filterDay = document.getElementById('filterDay');
+        var inputDay = document.getElementById('inputDay');
+
+        DAYS.forEach(function (day) {
+          var option = document.createElement('option');
+          option.value = day;
+          option.textContent = day;
+          filterDay.appendChild(option);
+
+          var option2 = document.createElement('option');
+          option2.value = day;
+          option2.textContent = day;
+          inputDay.appendChild(option2);
+        });
+
+        var inputClass = document.getElementById('inputClass');
+        var filterClass = document.getElementById('filterClass');
+
+        classes.forEach(function (kelas) {
+          var option = document.createElement('option');
+          option.value = kelas.id;
+          option.textContent = kelas.name;
+          inputClass.appendChild(option);
+
+          var option2 = document.createElement('option');
+          option2.value = kelas.id;
+          option2.textContent = kelas.name;
+          filterClass.appendChild(option2);
+        });
+      }
+
+      function getClass(id) {
+        return classes.find(function (kelas) { return kelas.id === id; });
+      }
+
+      function getSubject(id) {
+        return subjects.find(function (subject) { return subject.id === id; });
+      }
+
+      function populateSubjects(classId, selectedId) {
+        var select = document.getElementById('inputSubject');
+        var kelas = getClass(classId);
+        var available = subjects.filter(function (subject) {
+          return !kelas || !subject.programId || subject.programId === kelas.programId;
+        });
+
+        select.innerHTML = '<option value="">Pilih mata pelajaran</option>';
+
+        available.forEach(function (subject) {
+          var option = document.createElement('option');
+          option.value = subject.id;
+          option.textContent = subject.code ? subject.code + ' — ' + subject.name : subject.name;
+          select.appendChild(option);
+        });
+
+        if (selectedId) {
+          select.value = selectedId;
+        }
+      }
+
+      function render() {
+        var data = window.DemoStorage.getAll();
+        classes = data.classes || [];
+        subjects = data.subjects || [];
+
+        var filterClass = document.getElementById('filterClass').value;
+        var filterDay = document.getElementById('filterDay').value;
+        var schedules = (data.schedules || []).slice();
+
+        schedules = schedules.filter(function (schedule) {
+          return (!filterClass || schedule.classId === filterClass) &&
+            (!filterDay || schedule.day === filterDay);
+        });
+
+        schedules.sort(function (a, b) {
+          return DAYS.indexOf(a.day) - DAYS.indexOf(b.day) ||
+            String(a.startTime).localeCompare(String(b.startTime));
+        });
+
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (schedules.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada jadwal. Klik "+ Tambah Jadwal" untuk memulai.</td></tr>';
+          return;
+        }
+
+        schedules.forEach(function (schedule) {
+          var kelas = getClass(schedule.classId);
+          var subject = getSubject(schedule.subjectId);
+          var tr = document.createElement('tr');
+
+          tr.innerHTML =
+            '<td class="cell-main">' + AdminUI.escapeHTML(schedule.day || '-') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(schedule.startTime || '-') + '–' + AdminUI.escapeHTML(schedule.endTime || '-') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(kelas ? kelas.name : '-') + '</td>' +
+            '<td><div class="cell-main">' + AdminUI.escapeHTML(subject ? subject.name : '-') + '</div><div class="cell-sub">' + AdminUI.escapeHTML(subject ? subject.code || '' : '') + '</div></td>' +
+            '<td>' + AdminUI.escapeHTML(schedule.teacherName || '-') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(schedule.room || '-') + '</td>' +
+            '<td>' + (schedule.active !== false ? '<span class="badge-status badge-active"><span class="badge-dot"></span>Aktif</span>' : '<span class="badge-status badge-inactive"><span class="badge-dot"></span>Tidak Aktif</span>') + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="editSchedule(\'' + schedule.id + '\')" style="margin-right:4px;">Edit</button>' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="deleteSchedule(\'' + schedule.id + '\')">Hapus</button>' +
+            '</td>';
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.showAddModal = function () {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Jadwal';
+        document.getElementById('inputClass').value = '';
+        document.getElementById('inputSubject').value = '';
+        document.getElementById('inputTeacher').value = '';
+        document.getElementById('inputDay').value = 'Senin';
+        document.getElementById('inputStart').value = '';
+        document.getElementById('inputEnd').value = '';
+        document.getElementById('inputRoom').value = '';
+        document.getElementById('inputActive').value = 'true';
+        populateSubjects('');
+        document.getElementById('scheduleModal').classList.add('show');
+      };
+
+      window.editSchedule = function (id) {
+        var data = window.DemoStorage.getAll();
+        var schedule = (data.schedules || []).find(function (item) { return item.id === id; });
+
+        if (!schedule) return;
+
+        editingId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Jadwal';
+        document.getElementById('inputClass').value = schedule.classId || '';
+        populateSubjects(schedule.classId, schedule.subjectId);
+        document.getElementById('inputTeacher').value = schedule.teacherName || '';
+        document.getElementById('inputDay').value = schedule.day || 'Senin';
+        document.getElementById('inputStart').value = schedule.startTime || '';
+        document.getElementById('inputEnd').value = schedule.endTime || '';
+        document.getElementById('inputRoom').value = schedule.room || '';
+        document.getElementById('inputActive').value = String(schedule.active !== false);
+        document.getElementById('scheduleModal').classList.add('show');
+      };
+
+      window.saveSchedule = function () {
+        var classId = document.getElementById('inputClass').value;
+        var subjectId = document.getElementById('inputSubject').value;
+        var day = document.getElementById('inputDay').value;
+        var startTime = document.getElementById('inputStart').value;
+        var endTime = document.getElementById('inputEnd').value;
+
+        if (!classId) { AdminUI.showAlert('Kelas wajib dipilih.', 'danger'); return; }
+        if (!subjectId) { AdminUI.showAlert('Mata pelajaran wajib dipilih.', 'danger'); return; }
+        if (!day) { AdminUI.showAlert('Hari wajib dipilih.', 'danger'); return; }
+        if (!startTime || !endTime) { AdminUI.showAlert('Jam mulai dan selesai wajib diisi.', 'danger'); return; }
+        if (endTime <= startTime) { AdminUI.showAlert('Jam selesai harus lebih besar dari jam mulai.', 'danger'); return; }
+
+        var data = window.DemoStorage.getAll();
+        if (!Array.isArray(data.schedules)) data.schedules = [];
+
+        var payload = {
+          classId: classId,
+          subjectId: subjectId,
+          teacherName: document.getElementById('inputTeacher').value.trim(),
+          day: day,
+          startTime: startTime,
+          endTime: endTime,
+          room: document.getElementById('inputRoom').value.trim(),
+          active: document.getElementById('inputActive').value === 'true'
+        };
+
+        if (editingId) {
+          var schedule = data.schedules.find(function (item) { return item.id === editingId; });
+          if (schedule) Object.assign(schedule, payload);
+        } else {
+          payload.id = 'schedule-' + Date.now();
+          payload.createdAt = new Date().toISOString();
+          data.schedules.push(payload);
+        }
+
+        window.DemoStorage.saveAll(data);
+        closeModal();
+        render();
+        AdminUI.showAlert(editingId ? 'Jadwal diperbarui.' : 'Jadwal ditambahkan.', 'success');
+      };
+
+      window.deleteSchedule = function (id) {
+        if (!AdminUI.confirm('Hapus jadwal ini?')) return;
+
+        var data = window.DemoStorage.getAll();
+        data.schedules = (data.schedules || []).filter(function (item) { return item.id !== id; });
+        window.DemoStorage.saveAll(data);
+        render();
+        AdminUI.showAlert('Jadwal dihapus.', 'success');
+      };
+
+      window.closeModal = function () {
+        document.getElementById('scheduleModal').classList.remove('show');
+        editingId = null;
+      };
+
+      document.getElementById('inputClass').addEventListener('change', function () {
+        populateSubjects(this.value);
+        var kelas = getClass(this.value);
+
+        if (kelas && !document.getElementById('inputTeacher').value) {
+          document.getElementById('inputTeacher').value = kelas.teacherName || '';
+        }
+      });
+
+      document.getElementById('scheduleModal').addEventListener('click', function (event) {
+        if (event.target === this) closeModal();
+      });
+
+      document.getElementById('filterClass').addEventListener('change', render);
+      document.getElementById('filterDay').addEventListener('change', render);
+
+      populateStaticSelects();
+      populateSubjects('');
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daftar - PKBM & LPK</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+<link rel="stylesheet" href="../assets/css/style.css">
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+          <div class="text-center mb-3">
+            <span class="brand-mark mb-2" data-brand-mark>P</span>
+            <p class="small text-muted mb-0" data-brand-name>PKBM &amp; LPK</p>
+          </div>
+
+          <h4 class="mb-1 text-center">Daftar Akun</h4>
+          <p class="text-muted text-center small mb-4">Langkah 1 dari 3</p>
+
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <div id="alertArea"></div>
+
+              <form id="registerForm" novalidate>
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Nama Lengkap</label>
+                  <input type="text" class="form-control" id="fullName" required />
+                  <div class="invalid-feedback">Wajib diisi.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" placeholder="contoh@email.com" required />
+                  <div class="invalid-feedback">Email tidak valid.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" minlength="8" required />
+                  <div class="form-text">Minimal 8 karakter.</div>
+                  <div class="invalid-feedback">Minimal 8 karakter.</div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="confirmPassword" class="form-label">Ulangi Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" required />
+                  <div class="invalid-feedback">Password tidak cocok.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="btnSubmit">
+                  Daftar
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <p class="text-center small mt-3">
+            Sudah punya akun? <a href="login.html">Masuk</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../assets/js/mock-data.js"></script>
+    <script src="../assets/js/storage.js"></script>
+    <script src="../assets/js/branding.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+  </body>
+</html>
+

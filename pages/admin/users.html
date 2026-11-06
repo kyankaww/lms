@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pengguna — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Pengguna</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAddModal()">+ Tambah Pengguna</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="admin-alert admin-alert-info">
+        Status <strong>Tidak Aktif</strong> akan mencegah peserta masuk ke portal. Akun admin utama tidak dapat dinonaktifkan atau dihapus.
+      </div>
+
+      <div class="stat-grid stat-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Pengguna</div>
+          <div class="stat-card-value" id="statTotal">0</div>
+          <div class="stat-card-sub">Semua peran</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Peserta</div>
+          <div class="stat-card-value" id="statParticipants" style="color:var(--admin-info)">0</div>
+          <div class="stat-card-sub">Akun peserta</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Admin</div>
+          <div class="stat-card-value" id="statAdmins" style="color:var(--admin-primary)">0</div>
+          <div class="stat-card-sub">Pengelola sistem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Nonaktif</div>
+          <div class="stat-card-value" id="statInactive" style="color:var(--admin-danger)">0</div>
+          <div class="stat-card-sub">Akses dibatasi</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Direktori Pengguna</h3>
+          <div class="filter-bar">
+            <div class="search-input">
+              <input type="search" class="admin-input" id="searchInput" placeholder="Cari nama atau email..." />
+            </div>
+            <select class="admin-select" id="filterRole" style="width:140px;">
+              <option value="">Semua Peran</option>
+              <option value="Peserta">Peserta</option>
+              <option value="Admin">Admin</option>
+            </select>
+            <select class="admin-select" id="filterStatus" style="width:150px;">
+              <option value="">Semua Status</option>
+              <option value="active">Aktif</option>
+              <option value="inactive">Tidak Aktif</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Peran</th>
+                <th>Status</th>
+                <th>Terdaftar</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-modal-overlay" id="userModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Tambah Pengguna</h3>
+        <button class="admin-modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-group">
+          <label class="admin-label" for="inputName">Nama Lengkap *</label>
+          <input type="text" class="admin-input" id="inputName" />
+        </div>
+        <div class="form-group">
+          <label class="admin-label" for="inputEmail">Email *</label>
+          <input type="email" class="admin-input" id="inputEmail" placeholder="nama@email.com" />
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label" for="inputRole">Peran</label>
+            <select class="admin-select" id="inputRole">
+              <option value="Peserta">Peserta</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="admin-label" for="inputStatus">Status</label>
+            <select class="admin-select" id="inputStatus">
+              <option value="active">Aktif</option>
+              <option value="inactive">Tidak Aktif</option>
+            </select>
+          </div>
+        </div>
+        <p class="text-muted fs-xs mb-0">Catatan demo: pengguna yang ditambahkan di sini belum memiliki password tersendiri. Login peserta tetap memakai alur registrasi.</p>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveUser()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var editingId = null;
+      var PRIMARY_ADMIN = 'admin@pkbm.test';
+
+      function normalize(value) {
+        return String(value || '').trim().toLowerCase();
+      }
+
+      function getUsers() {
+        return window.DemoStorage.getCollection('users') || [];
+      }
+
+      function isPrimaryAdmin(user) {
+        return normalize(user.email) === PRIMARY_ADMIN;
+      }
+
+      function countActiveAdmins(users) {
+        return users.filter(function (user) {
+          return user.role === 'Admin' && user.status !== 'inactive';
+        }).length;
+      }
+
+      function updateStats(users) {
+        document.getElementById('statTotal').textContent = users.length;
+        document.getElementById('statParticipants').textContent = users.filter(function (user) { return user.role === 'Peserta'; }).length;
+        document.getElementById('statAdmins').textContent = users.filter(function (user) { return user.role === 'Admin'; }).length;
+        document.getElementById('statInactive').textContent = users.filter(function (user) { return user.status === 'inactive'; }).length;
+      }
+
+      function render() {
+        var users = getUsers().slice();
+        var keyword = normalize(document.getElementById('searchInput').value);
+        var role = document.getElementById('filterRole').value;
+        var status = document.getElementById('filterStatus').value;
+
+        updateStats(users);
+
+        users = users.filter(function (user) {
+          var text = normalize(user.name + ' ' + user.email);
+          return (!keyword || text.indexOf(keyword) !== -1) &&
+            (!role || user.role === role) &&
+            (!status || user.status === status);
+        });
+
+        users.sort(function (a, b) {
+          return normalize(a.name).localeCompare(normalize(b.name));
+        });
+
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (users.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:40px;color:var(--admin-muted);">Tidak ada pengguna yang cocok.</td></tr>';
+          return;
+        }
+
+        users.forEach(function (user) {
+          var tr = document.createElement('tr');
+          var roleClass = user.role === 'Admin' ? 'badge-process' : 'badge-approved';
+          var primary = isPrimaryAdmin(user);
+
+          tr.innerHTML =
+            '<td class="cell-main">' + AdminUI.escapeHTML(user.name || '-') + (primary ? ' <span class="badge-status badge-pending">Utama</span>' : '') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(user.email || '-') + '</td>' +
+            '<td><span class="badge-status ' + roleClass + '">' + AdminUI.escapeHTML(user.role || 'Peserta') + '</span></td>' +
+            '<td>' + (user.status === 'inactive' ? '<span class="badge-status badge-inactive"><span class="badge-dot"></span>Tidak Aktif</span>' : '<span class="badge-status badge-active"><span class="badge-dot"></span>Aktif</span>') + '</td>' +
+            '<td>' + AdminUI.formatDate(user.createdAt) + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="editUser(\'' + user.id + '\')" style="margin-right:4px;">Edit</button>' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="toggleUser(\'' + user.id + '\')" style="margin-right:4px;">' + (user.status === 'inactive' ? 'Aktifkan' : 'Nonaktifkan') + '</button>' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="deleteUser(\'' + user.id + '\')">Hapus</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.showAddModal = function () {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Pengguna';
+        document.getElementById('inputName').value = '';
+        document.getElementById('inputEmail').value = '';
+        document.getElementById('inputEmail').disabled = false;
+        document.getElementById('inputRole').value = 'Peserta';
+        document.getElementById('inputStatus').value = 'active';
+        document.getElementById('userModal').classList.add('show');
+        document.getElementById('inputName').focus();
+      };
+
+      window.editUser = function (id) {
+        var user = getUsers().find(function (item) { return item.id === id; });
+
+        if (!user) return;
+
+        editingId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Pengguna';
+        document.getElementById('inputName').value = user.name || '';
+        document.getElementById('inputEmail').value = user.email || '';
+        document.getElementById('inputEmail').disabled = isPrimaryAdmin(user);
+        document.getElementById('inputRole').value = user.role || 'Peserta';
+        document.getElementById('inputRole').disabled = isPrimaryAdmin(user);
+        document.getElementById('inputStatus').value = user.status || 'active';
+        document.getElementById('inputStatus').disabled = isPrimaryAdmin(user);
+        document.getElementById('userModal').classList.add('show');
+      };
+
+      window.saveUser = function () {
+        var name = document.getElementById('inputName').value.trim();
+        var email = normalize(document.getElementById('inputEmail').value);
+        var role = document.getElementById('inputRole').value;
+        var status = document.getElementById('inputStatus').value;
+
+        if (!name) { AdminUI.showAlert('Nama pengguna wajib diisi.', 'danger'); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { AdminUI.showAlert('Format email tidak valid.', 'danger'); return; }
+
+        var allData = window.DemoStorage.getAll();
+        if (!Array.isArray(allData.users)) allData.users = [];
+
+        var duplicate = allData.users.find(function (user) {
+          return normalize(user.email) === email && user.id !== editingId;
+        });
+
+        if (duplicate) { AdminUI.showAlert('Email sudah digunakan pengguna lain.', 'danger'); return; }
+
+        if (editingId) {
+          var user = allData.users.find(function (item) { return item.id === editingId; });
+
+          if (!user) return;
+
+          if (isPrimaryAdmin(user)) {
+            user.name = name;
+          } else {
+            user.name = name;
+            user.email = email;
+            user.role = role;
+            user.status = status;
+          }
+
+          if (countActiveAdmins(allData.users) === 0) {
+            AdminUI.showAlert('Minimal harus ada satu admin aktif.', 'danger');
+            return;
+          }
+        } else {
+          allData.users.push({
+            id: 'user-' + Date.now(),
+            name: name,
+            email: email,
+            role: role,
+            status: status,
+            createdAt: new Date().toISOString()
+          });
+        }
+
+        window.DemoStorage.saveAll(allData);
+        closeModal();
+        render();
+        AdminUI.showAlert(editingId ? 'Pengguna diperbarui.' : 'Pengguna ditambahkan.', 'success');
+      };
+
+      window.toggleUser = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var user = (allData.users || []).find(function (item) { return item.id === id; });
+
+        if (!user) return;
+
+        if (isPrimaryAdmin(user)) {
+          AdminUI.showAlert('Akun admin utama tidak dapat dinonaktifkan.', 'danger');
+          return;
+        }
+
+        if (user.role === 'Admin' && user.status !== 'inactive' && countActiveAdmins(allData.users) <= 1) {
+          AdminUI.showAlert('Minimal harus ada satu admin aktif.', 'danger');
+          return;
+        }
+
+        user.status = user.status === 'inactive' ? 'active' : 'inactive';
+        window.DemoStorage.saveAll(allData);
+        render();
+        AdminUI.showAlert('Status pengguna diperbarui.', 'success');
+      };
+
+      window.deleteUser = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var user = (allData.users || []).find(function (item) { return item.id === id; });
+
+        if (!user) return;
+        if (isPrimaryAdmin(user)) {
+          AdminUI.showAlert('Akun admin utama tidak dapat dihapus.', 'danger');
+          return;
+        }
+
+        if (user.role === 'Admin' && user.status !== 'inactive' && countActiveAdmins(allData.users) <= 1) {
+          AdminUI.showAlert('Minimal harus ada satu admin aktif.', 'danger');
+          return;
+        }
+
+        if (!AdminUI.confirm('Hapus pengguna ' + (user.name || user.email) + '?')) return;
+
+        allData.users = allData.users.filter(function (item) { return item.id !== id; });
+        window.DemoStorage.saveAll(allData);
+        render();
+        AdminUI.showAlert('Pengguna dihapus.', 'success');
+      };
+
+      window.closeModal = function () {
+        document.getElementById('userModal').classList.remove('show');
+        document.getElementById('inputEmail').disabled = false;
+        document.getElementById('inputRole').disabled = false;
+        document.getElementById('inputStatus').disabled = false;
+        editingId = null;
+      };
+
+      document.getElementById('searchInput').addEventListener('input', render);
+      document.getElementById('filterRole').addEventListener('change', render);
+      document.getElementById('filterStatus').addEventListener('change', render);
+      document.getElementById('userModal').addEventListener('click', function (event) {
+        if (event.target === this) closeModal();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

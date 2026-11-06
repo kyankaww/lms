@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PKBM & LPK | Pendidikan dan Pelatihan</title>
+
+    <meta
+      name="description"
+      content="Platform informasi pendidikan kesetaraan dan pelatihan kerja PKBM & LPK."
+    />
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+          <span class="brand-mark" data-brand-mark>P</span>
+          <span data-brand-name>PKBM &amp; LPK</span>
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-controls="mainNav"
+          aria-expanded="false"
+          aria-label="Buka navigasi"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+            <li class="nav-item">
+              <a class="nav-link active" href="#beranda"> Beranda </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#program"> Program </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#tentang"> Tentang </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#kontak"> Kontak </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="btn btn-outline-primary btn-sm" href="pages/login.html">
+                Masuk
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="btn btn-primary btn-sm" href="pages/registration.html">
+                Daftar Sekarang
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <main>
+      <section class="hero-section" id="beranda">
+        <div class="container py-5 py-lg-6">
+          <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+              <span class="eyebrow">
+                Pendidikan • Keterampilan • Masa Depan
+              </span>
+
+              <h1 class="display-4 fw-bold mt-3">
+                <span id="heroTitle">Belajar dan berkembang,</span>
+                <span class="text-primary" id="heroAccent">tanpa batas.</span>
+              </h1>
+
+              <p class="lead text-secondary mt-3" id="heroDescription">
+                Layanan pendidikan kesetaraan dan pelatihan keterampilan untuk
+                membantu setiap peserta meraih kesempatan yang lebih baik.
+              </p>
+
+              <div class="d-flex flex-wrap gap-2 mt-4">
+                <a
+                  class="btn btn-primary btn-lg"
+                  href="pages/registration.html"
+                >
+                  Mulai Pendaftaran
+                </a>
+
+                <a class="btn btn-outline-secondary btn-lg" href="#program">
+                  Lihat Program
+                </a>
+              </div>
+
+              <div class="row g-3 mt-4">
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <strong>3</strong>
+                    <span>Paket Kesetaraan</span>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <strong>Fleksibel</strong>
+                    <span>Jadwal Belajar</span>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="mini-stat">
+                    <strong>Praktis</strong>
+                    <span>Pelatihan Kerja</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ILUSTRASI -->
+            <div class="col-lg-5">
+              <div class="hero-card">
+                <div class="hero-card-top">
+                  <span class="status-dot"></span>
+                  Pendaftaran dibuka
+                </div>
+
+                <div class="hero-illustration">
+                  <div class="sun"></div>
+
+                  <div class="book book-one"></div>
+                  <div class="book book-two"></div>
+                  <div class="book book-three"></div>
+
+                  <div class="plant">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+                </div>
+
+                <h2 class="h4 fw-bold mt-4">Mulai langkah berikutnya</h2>
+
+                <p class="text-secondary mb-0">
+                  Pilih program yang sesuai dengan kebutuhan dan tujuan
+                  belajarmu.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROGRAM -->
+      <section class="section-padding" id="program">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow"> Program Pilihan </span>
+
+            <h2 class="fw-bold mt-2">Jalur belajar yang sesuai untukmu</h2>
+
+            <p class="text-secondary">
+              Pilih pendidikan kesetaraan atau pelatihan keterampilan sesuai
+              kebutuhanmu.
+            </p>
+          </div>
+
+          <!-- Kartu program dibuat melalui JavaScript -->
+          <div class="row g-4" id="programCards"></div>
+        </div>
+      </section>
+
+      <!-- PENGUMUMAN -->
+      <section class="section-padding d-none" id="pengumuman">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow"> Pengumuman </span>
+            <h2 class="fw-bold mt-2">Informasi terbaru</h2>
+            <p class="text-secondary">
+              Kabar dan jadwal penting dari pengelola untuk peserta dan calon
+              peserta.
+            </p>
+          </div>
+
+          <div class="row g-4" id="announcementList"></div>
+        </div>
+      </section>
+
+      <!-- TENTANG -->
+      <section class="section-padding bg-soft" id="tentang">
+        <div class="container">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+              <span class="eyebrow"> Tentang Kami </span>
+
+              <h2 class="fw-bold mt-2" id="aboutTitle">
+                Pendidikan yang lebih mudah dijangkau.
+              </h2>
+
+              <p class="text-secondary" id="aboutDescription">
+                PKBM menyediakan jalur pendidikan kesetaraan, sedangkan LPK
+                berfokus pada peningkatan keterampilan untuk dunia kerja.
+              </p>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="info-panel">
+                <div class="info-row">
+                  <span class="info-icon">01</span>
+
+                  <div>
+                    <strong>Fleksibel</strong>
+
+                    <p class="mb-0 text-secondary">
+                      Informasi program dan jadwal belajar dirancang agar mudah
+                      diakses.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-icon">02</span>
+
+                  <div>
+                    <strong>Terarah</strong>
+
+                    <p class="mb-0 text-secondary">
+                      Alur pendaftaran dibuat lebih jelas bagi calon peserta.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="info-row">
+                  <span class="info-icon">03</span>
+
+                  <div>
+                    <strong>Terpantau</strong>
+
+                    <p class="mb-0 text-secondary">
+                      Platform dirancang untuk mendukung pengelolaan peserta
+                      didik dan kegiatan akademik.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KONTAK -->
+      <section class="section-padding" id="kontak">
+        <div class="container">
+          <div class="contact-banner">
+            <div>
+              <span class="eyebrow text-white-50"> Siap Memulai? </span>
+
+              <h2 class="fw-bold mt-2 mb-2">Temukan program yang tepat.</h2>
+
+              <p class="mb-0 text-white-50">
+                Hubungi pengelola untuk mendapatkan informasi program dan
+                pendaftaran.
+              </p>
+            </div>
+
+            <a class="btn btn-light btn-lg" href="pages/registration.html">
+              Daftar Sekarang
+            </a>
+          </div>
+
+          <div class="contact-info-grid">
+            <div class="contact-info-item">
+              <span>Alamat</span>
+              <strong id="contactAddress">Jl. Pendidikan No. 10, Bandung</strong>
+            </div>
+            <div class="contact-info-item">
+              <span>Telepon / WhatsApp</span>
+              <strong id="contactPhone">0812-3456-7890</strong>
+            </div>
+            <div class="contact-info-item">
+              <span>Email</span>
+              <strong id="contactEmail">info@pkbm-lpk.test</strong>
+            </div>
+            <div class="contact-info-item">
+              <span>Jam Layanan</span>
+              <strong id="contactHours">Senin–Sabtu, 08.00–17.00</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div
+        class="container d-flex flex-column flex-md-row justify-content-between gap-2"
+      >
+        <span>
+          © <span id="currentYear" data-brand-year></span>
+          <span data-brand-name>PKBM &amp; LPK</span>
+        </span>
+
+        <span class="text-secondary">
+          <span id="footerNote">Platform informasi pendidikan kesetaraan dan pelatihan kerja.</span>
+          <a href="pages/admin/login.html" class="ms-2">Admin</a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="assets/js/mock-data.js"></script>
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/branding.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

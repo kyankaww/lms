@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Masuk Admin - PKBM & LPK</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../assets/css/style.css" />
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+          <div class="text-center mb-4">
+            <span class="brand-mark mx-auto mb-2">P</span>
+            <h4 class="mb-1">Masuk Admin</h4>
+            <p class="text-muted small mb-0" data-brand-name>PKBM &amp; LPK</p>
+          </div>
+
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <div id="alertArea"></div>
+
+              <form id="adminLoginForm" novalidate>
+                <div class="mb-3">
+                  <label for="adminEmail" class="form-label">Email Admin</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="adminEmail"
+                    placeholder="admin@pkbm.test"
+                    required
+                  />
+                  <div class="invalid-feedback">Email tidak valid.</div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="adminPassword" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="adminPassword"
+                    required
+                  />
+                  <div class="invalid-feedback">Wajib diisi.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="btnAdminLogin">
+                  Masuk sebagai Admin
+                </button>
+              </form>
+
+              <div class="alert alert-light border small mt-4 mb-0">
+                <strong>Akun demo:</strong><br />
+                Email: <code>admin@pkbm.test</code><br />
+                Password: <code>admin123</code>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-center small mt-3 mb-0">
+            <a href="../login.html">Masuk sebagai peserta</a>
+            &middot;
+            <a href="../../index.html">Halaman utama</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../assets/js/mock-data.js"></script>
+    <script src="../../assets/js/storage.js"></script>
+    <script src="../../assets/js/branding.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script>
+      (function () {
+        "use strict";
+
+        var form = document.getElementById("adminLoginForm");
+        var emailInput = document.getElementById("adminEmail");
+        var passwordInput = document.getElementById("adminPassword");
+        var button = document.getElementById("btnAdminLogin");
+        var alertArea = document.getElementById("alertArea");
+
+        var DEMO_EMAIL = "admin@pkbm.test";
+        var DEMO_PASSWORD = "admin123";
+
+        function showError(message) {
+          alertArea.innerHTML =
+            '<div class="alert alert-danger small py-2" role="alert">' +
+            message +
+            "</div>";
+        }
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          if (!form.checkValidity()) {
+            form.classList.add("was-validated");
+            return;
+          }
+
+          var email = emailInput.value.trim().toLowerCase();
+          var password = passwordInput.value;
+
+          if (email !== DEMO_EMAIL || password !== DEMO_PASSWORD) {
+            showError("Email atau password admin tidak sesuai.");
+            return;
+          }
+
+          button.disabled = true;
+          button.textContent = "Memproses...";
+
+          setTimeout(function () {
+            window.Auth.loginAdmin(email);
+            window.location.href = window.Auth.safeRedirect("dashboard.html");
+          }, 400);
+        });
+      })();
+    </script>
+  </body>
+</html>

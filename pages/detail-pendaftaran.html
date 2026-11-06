@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pendaftaran | PKBM & LPK</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body data-page-access="user">
+  <nav class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="../index.html"><span class="brand-mark" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span></a>
+
+      <a href="dashboard.html" class="btn btn-outline-secondary btn-sm">
+        Kembali ke Dashboard
+      </a>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div>
+        <p class="text-muted mb-1">Dashboard Peserta</p>
+        <h1 class="h3 fw-bold mb-1">Detail Pendaftaran</h1>
+        <p class="text-muted mb-0">
+          Informasi program dan perkembangan status pendaftaranmu.
+        </p>
+      </div>
+    </div>
+
+    <div id="pesanError" class="alert alert-warning d-none" role="alert">
+      Pendaftaran tidak ditemukan.
+    </div>
+
+    <div id="kontenPendaftaran" class="d-none">
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div>
+              <span class="badge text-bg-primary mb-2" id="kategoriProgram">
+                PKBM
+              </span>
+
+              <h2 class="h4 fw-bold mb-1" id="namaProgram">Nama Program</h2>
+
+              <p class="text-muted mb-0">
+                Nomor pendaftaran:
+                <span class="fw-semibold" id="nomorPendaftaran">-</span>
+              </p>
+            </div>
+
+            <div class="text-md-end">
+              <p class="text-muted small mb-1">Tanggal pendaftaran</p>
+              <p class="fw-semibold mb-0" id="tanggalPendaftaran">-</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <section class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <h3 class="h5 fw-bold mb-4">Informasi Peserta</h3>
+
+              <div class="mb-3">
+                <div class="text-muted small">Nama lengkap</div>
+                <div class="fw-semibold" id="namaPeserta">-</div>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted small">Email</div>
+                <div class="fw-semibold text-break" id="emailPeserta">-</div>
+              </div>
+
+              <div>
+                <div class="text-muted small">Catatan pendaftaran</div>
+                <div id="catatanPendaftaran">Tidak ada catatan.</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-lg-6">
+          <section class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <h3 class="h5 fw-bold mb-4">Status Pendaftaran</h3>
+
+              <div class="mb-4">
+                <div class="text-muted small mb-2">Status verifikasi</div>
+                <span id="statusVerifikasi" class="badge rounded-pill">
+                  -
+                </span>
+              </div>
+
+              <div class="mb-4">
+                <div class="text-muted small mb-2">Status pembayaran</div>
+                <span id="statusPembayaran" class="badge rounded-pill">
+                  -
+                </span>
+              </div>
+
+              <div class="alert alert-light border mb-0">
+                <strong>Informasi:</strong>
+                <p class="small mb-0 mt-1" id="informasiStatus">
+                  Status akan diperbarui oleh admin.
+                </p>
+              </div>
+
+              <div id="paymentAction" class="mt-3"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="card border-0 shadow-sm mt-4">
+        <div class="card-body p-4">
+          <h3 class="h5 fw-bold mb-1">Riwayat Perubahan Status</h3>
+          <p class="text-muted small mb-4">
+            Catatan perubahan status pendaftaran dan pembayaran.
+          </p>
+
+          <div id="riwayatKosong" class="alert alert-light border d-none">
+            Belum ada riwayat perubahan status.
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Jenis perubahan</th>
+                  <th>Status sebelumnya</th>
+                  <th>Status terbaru</th>
+                </tr>
+              </thead>
+              <tbody id="daftarRiwayat"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../assets/js/mock-data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/branding.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const registrationId = params.get("id");
+
+      const errorElement = document.getElementById("pesanError");
+      const contentElement = document.getElementById("kontenPendaftaran");
+
+      function setText(id, value) {
+        document.getElementById(id).textContent = value || "-";
+      }
+
+      function formatDate(value) {
+        if (!value) return "-";
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) return "-";
+
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }).format(date);
+      }
+
+      function statusClass(status, type) {
+        if (type === "payment") {
+          if (status === "Lunas") return "text-bg-success";
+          if (status === "Menunggu konfirmasi") return "text-bg-info";
+          return "text-bg-warning";
+        }
+
+        if (status === "Diterima") return "text-bg-success";
+        if (status === "Ditolak") return "text-bg-danger";
+        if (status === "Diproses") return "text-bg-primary";
+
+        return "text-bg-warning";
+      }
+
+      function renderHistory(registration) {
+        const tbody = document.getElementById("daftarRiwayat");
+        const empty = document.getElementById("riwayatKosong");
+
+        tbody.replaceChildren();
+
+        const history = Array.isArray(registration.statusHistory)
+          ? registration.statusHistory
+          : [];
+
+        empty.classList.toggle("d-none", history.length > 0);
+
+        history
+          .slice()
+          .reverse()
+          .forEach(function (item) {
+            const row = document.createElement("tr");
+
+            [
+              formatDate(item.changedAt),
+              item.type === "payment" ? "Pembayaran" : "Verifikasi",
+              item.from || "-",
+              item.to || "-"
+            ].forEach(function (value) {
+              const cell = document.createElement("td");
+              cell.textContent = value;
+              row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+          });
+      }
+
+      function renderDetail() {
+        const allData = window.DemoStorage.getAll();
+
+        const registration = allData.registrations.find(function (item) {
+          return item.id === registrationId;
+        });
+
+        if (!registration) {
+          contentElement.classList.add("d-none");
+          errorElement.textContent =
+            "Pendaftaran tidak ditemukan. Periksa tautan yang kamu gunakan.";
+          errorElement.classList.remove("d-none");
+          return;
+        }
+
+        // Halaman ini hanya menampilkan pendaftaran milik akun yang sedang login.
+        const currentEmail = window.Auth
+          ? window.Auth.getCurrentUser().email
+          : (localStorage.getItem("registerEmail") || "")
+              .trim()
+              .toLowerCase();
+
+        const loggedIn = window.Auth
+          ? window.Auth.isUserLoggedIn()
+          : localStorage.getItem("demoLoggedIn") === "true";
+
+        if (
+          !loggedIn ||
+          !currentEmail ||
+          !registration.email ||
+          registration.email.trim().toLowerCase() !== currentEmail
+        ) {
+          contentElement.classList.add("d-none");
+          errorElement.textContent =
+            "Kamu harus login menggunakan akun pemilik pendaftaran untuk melihat detail ini.";
+          errorElement.classList.remove("d-none");
+          return;
+        }
+
+        errorElement.classList.add("d-none");
+        contentElement.classList.remove("d-none");
+
+        setText("kategoriProgram", registration.category);
+        setText("namaProgram", registration.programName);
+        setText("nomorPendaftaran", registration.id);
+        setText("tanggalPendaftaran", formatDate(registration.createdAt));
+        setText("namaPeserta", registration.name);
+        setText("emailPeserta", registration.email);
+        setText("catatanPendaftaran", registration.note || "Tidak ada catatan.");
+
+        const verification = document.getElementById("statusVerifikasi");
+        verification.textContent = registration.status || "Menunggu verifikasi";
+        verification.className =
+          "badge rounded-pill " +
+          statusClass(registration.status || "Menunggu verifikasi", "verification");
+
+        const payment = document.getElementById("statusPembayaran");
+        payment.textContent = registration.paymentStatus || "Belum dibayar";
+        payment.className =
+          "badge rounded-pill " +
+          statusClass(registration.paymentStatus || "Belum dibayar", "payment");
+
+        let message = "Silakan menunggu informasi selanjutnya dari admin.";
+
+        if (registration.status === "Diproses") {
+          message = "Pendaftaran sedang diproses oleh admin.";
+        } else if (registration.status === "Diterima") {
+          message = "Pendaftaranmu telah diterima.";
+        } else if (registration.status === "Ditolak") {
+          message = "Pendaftaranmu ditolak. Silakan hubungi admin untuk informasi lebih lanjut.";
+        }
+
+        if (registration.paymentRejectionReason) {
+          message +=
+            " Pembayaran sebelumnya ditolak: " +
+            registration.paymentRejectionReason;
+        }
+
+        if (registration.adminNotes) {
+          message += " Catatan admin: " + registration.adminNotes;
+        }
+
+        setText("informasiStatus", message);
+        renderHistory(registration);
+
+        const paymentAction = document.getElementById("paymentAction");
+        paymentAction.replaceChildren();
+
+        const paymentLink = document.createElement("a");
+        paymentLink.className = "btn btn-primary btn-sm";
+        paymentLink.href =
+          "pembayaran.html?id=" + encodeURIComponent(registration.id);
+        paymentLink.textContent =
+          registration.paymentStatus === "Lunas"
+            ? "Lihat Pembayaran"
+            : "Bayar / Konfirmasi Pembayaran";
+
+        paymentAction.appendChild(paymentLink);
+      }
+
+      renderDetail();
+
+      window.addEventListener("demo-data-updated", renderDetail);
+      window.addEventListener("storage", renderDetail);
+    })();
+  </script>
+</body>
+</html>

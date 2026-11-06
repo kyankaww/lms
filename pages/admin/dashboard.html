@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Admin — PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran <span class="nav-badge" id="pendingBadge">0</span></a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" type="button">Menu</button>
+      <h1 class="admin-header-title">Dashboard</h1>
+      <div class="admin-header-actions">
+        <a href="../dashboard.html" class="btn-admin btn-admin-outline btn-admin-sm">Portal Peserta</a>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="admin-content">
+      <!-- Alert Container -->
+      <div id="alertContainer"></div>
+
+      <!-- Greeting -->
+      <div style="margin-bottom: 24px;">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin: 0 0 4px;">Selamat datang, Admin</h2>
+        <p class="text-muted" style="margin: 0; font-size: 0.88rem;">Berikut ringkasan data terkini dari sistem PKBM & LPK.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-primary">Dftr</div>
+          <div class="stat-card-label">Total Pendaftaran</div>
+          <div class="stat-card-value" id="statTotal">0</div>
+          <div class="stat-card-sub">Semua program</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-warning">Wait</div>
+          <div class="stat-card-label">Menunggu Verifikasi</div>
+          <div class="stat-card-value" id="statPending" style="color: var(--admin-warning);">0</div>
+          <div class="stat-card-sub">Perlu ditinjau</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-success">Acc</div>
+          <div class="stat-card-label">Diterima</div>
+          <div class="stat-card-value" id="statApproved" style="color: var(--admin-success);">0</div>
+          <div class="stat-card-sub">Pendaftaran disetujui</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-danger">Tol</div>
+          <div class="stat-card-label">Ditolak</div>
+          <div class="stat-card-value" id="statRejected" style="color: var(--admin-danger);">0</div>
+          <div class="stat-card-sub">Pendaftaran ditolak</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-info">Ssw</div>
+          <div class="stat-card-label">Peserta Aktif</div>
+          <div class="stat-card-value" id="statStudents" style="color: var(--admin-info);">0</div>
+          <div class="stat-card-sub">Terdaftar aktif</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-warning">Rp</div>
+          <div class="stat-card-label">Belum Bayar</div>
+          <div class="stat-card-value" id="statUnpaid" style="color: var(--admin-warning);">0</div>
+          <div class="stat-card-sub">Menunggu pembayaran</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-primary">Prg</div>
+          <div class="stat-card-label">Program Aktif</div>
+          <div class="stat-card-value" id="statPrograms">0</div>
+          <div class="stat-card-sub">PKBM & LPK</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon stat-icon-success">Info</div>
+          <div class="stat-card-label">Pengumuman</div>
+          <div class="stat-card-value" id="statAnnouncements">0</div>
+          <div class="stat-card-sub">Aktif dipublikasi</div>
+        </div>
+      </div>
+
+      <!-- Two Column Layout -->
+      <div class="dashboard-grid">
+
+        <!-- Recent Registrations -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Pendaftaran Terbaru</h3>
+            <a href="registrations.html" class="btn-admin btn-admin-outline btn-admin-sm">Lihat Semua</a>
+          </div>
+          <div class="admin-card-body" style="padding: 8px 20px;">
+            <ul class="quick-list" id="recentRegistrations">
+              <li class="empty-state" style="padding: 24px;">
+                <div class="empty-state-icon">-</div>
+                <div class="empty-state-text">Belum ada pendaftaran.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recent Payments -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Pembayaran Terkini</h3>
+            <a href="payments.html" class="btn-admin btn-admin-outline btn-admin-sm">Lihat Semua</a>
+          </div>
+          <div class="admin-card-body" style="padding: 8px 20px;">
+            <ul class="quick-list" id="recentPayments">
+              <li class="empty-state" style="padding: 24px;">
+                <div class="empty-state-icon">-</div>
+                <div class="empty-state-text">Belum ada data pembayaran.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Students by Program -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Peserta per Program</h3>
+          </div>
+          <div class="admin-card-body" style="padding: 8px 20px;">
+            <ul class="quick-list" id="studentsByProgram">
+              <li class="empty-state" style="padding: 24px;">
+                <div class="empty-state-icon">-</div>
+                <div class="empty-state-text">Belum ada data peserta.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Aksi Cepat</h3>
+          </div>
+          <div class="admin-card-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <a href="registrations.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Kelola Pendaftaran
+              </a>
+              <a href="students.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Kelola Peserta
+              </a>
+              <a href="attendance.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Input Kehadiran
+              </a>
+              <a href="schedules.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Kelola Jadwal
+              </a>
+              <a href="announcements.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Buat Pengumuman
+              </a>
+              <a href="programs.html" class="btn-admin btn-admin-outline" style="justify-content: center;">
+                Kelola Program
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      function render() {
+        var data = window.DemoStorage.getAll();
+        var registrations = data.registrations || [];
+        var programs = data.programs || [];
+        var students = data.students || [];
+        var announcements = data.announcements || [];
+
+        // Stats
+        document.getElementById('statTotal').textContent = registrations.length;
+        document.getElementById('statPrograms').textContent = programs.filter(function (p) { return p.active; }).length;
+        document.getElementById('statAnnouncements').textContent = announcements.filter(function (a) { return a.active; }).length;
+        document.getElementById('statStudents').textContent = students.filter(function (s) { return s.status === 'active'; }).length;
+
+        var pending = registrations.filter(function (r) { return r.status === 'Menunggu verifikasi' || !r.status; }).length;
+        var approved = registrations.filter(function (r) { return r.status === 'Diterima'; }).length;
+        var rejected = registrations.filter(function (r) { return r.status === 'Ditolak'; }).length;
+        var unpaid = registrations.filter(function (r) { return r.paymentStatus !== 'Lunas'; }).length;
+
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('statApproved').textContent = approved;
+        document.getElementById('statRejected').textContent = rejected;
+        document.getElementById('statUnpaid').textContent = unpaid;
+
+        // Pending badge in sidebar
+        var badge = document.getElementById('pendingBadge');
+        if (badge) badge.textContent = pending;
+
+        // Recent Registrations
+        var recentList = document.getElementById('recentRegistrations');
+        var recentRegs = registrations
+          .slice()
+          .sort(function (a, b) { return new Date(b.createdAt) - new Date(a.createdAt); })
+          .slice(0, 5);
+
+        if (recentRegs.length > 0) {
+          recentList.innerHTML = '';
+          recentRegs.forEach(function (reg) {
+            var li = document.createElement('li');
+            li.className = 'quick-list-item';
+            var statusClass = 'badge-pending';
+            if (reg.status === 'Diterima') statusClass = 'badge-approved';
+            else if (reg.status === 'Ditolak') statusClass = 'badge-rejected';
+            else if (reg.status === 'Diproses') statusClass = 'badge-process';
+
+            li.innerHTML =
+              '<div class="quick-list-icon stat-icon-primary">📋</div>' +
+              '<div class="quick-list-info">' +
+                '<div class="quick-list-title">' + AdminUI.escapeHTML(reg.name || 'Belum tersedia') + '</div>' +
+                '<div class="quick-list-meta">' + AdminUI.escapeHTML(reg.programName || '-') + ' · ' + AdminUI.formatDate(reg.createdAt) + '</div>' +
+              '</div>' +
+              '<span class="badge-status " + statusClass + ""><span class="badge-dot"></span>' + AdminUI.escapeHTML(reg.status || 'Menunggu') + '</span>';
+            recentList.appendChild(li);
+          });
+        }
+
+        // Recent Payments
+        var recentPaymentList = document.getElementById('recentPayments');
+        var payments = data.payments || [];
+        var recentPayments = payments
+          .slice()
+          .sort(function (a, b) { return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt); })
+          .slice(0, 5);
+
+        if (recentPaymentList && recentPayments.length > 0) {
+          recentPaymentList.innerHTML = '';
+          recentPayments.forEach(function (payment) {
+            var li = document.createElement('li');
+            li.className = 'quick-list-item';
+            li.innerHTML =
+              '<div class="quick-list-icon stat-icon-warning">💰</div>' +
+              '<div class="quick-list-info">' +
+                '<div class="quick-list-title">' + AdminUI.escapeHTML(payment.name || 'Peserta') + '</div>' +
+                '<div class="quick-list-meta">' + AdminUI.escapeHTML(payment.programName || '-') + ' · ' + AdminUI.formatCurrency(payment.amount || 0) + '</div>' +
+              '</div>' +
+              AdminUI.statusBadge(payment.status || 'Belum dibayar');
+            recentPaymentList.appendChild(li);
+          });
+        }
+
+        // Students by Program
+        var progList = document.getElementById('studentsByProgram');
+        var activePrograms = programs.filter(function (p) { return p.active; });
+        if (activePrograms.length > 0) {
+          progList.innerHTML = '';
+          activePrograms.forEach(function (prog) {
+            var count = registrations.filter(function (r) { return r.programId === prog.id; }).length;
+            var li = document.createElement('li');
+            li.className = 'quick-list-item';
+            var bgClass = prog.category === 'PKBM' ? 'stat-icon-primary' : 'stat-icon-success';
+            li.innerHTML =
+              '<div class="quick-list-icon ' + bgClass + '">' + (prog.category === 'PKBM' ? 'P' : 'L') + '</div>' +
+              '<div class="quick-list-info">' +
+                '<div class="quick-list-title">' + AdminUI.escapeHTML(prog.name) + '</div>' +
+                '<div class="quick-list-meta">' + AdminUI.escapeHTML(prog.category) + ' · ' + AdminUI.escapeHTML(prog.level || '') + '</div>' +
+              '</div>' +
+              '<span style="font-weight: 700; font-size: 1.1rem;">' + count + '</span>';
+            progList.appendChild(li);
+          });
+        }
+      }
+
+      render();
+      window.addEventListener('demo-data-updated', render);
+      window.addEventListener('storage', render);
+    })();
+  </script>
+</body>
+</html>

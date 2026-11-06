@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pembayaran — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" type="button">Menu</button>
+      <h1 class="admin-header-title">Kelola Pembayaran</h1>
+      <div class="admin-header-actions"></div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="stat-grid stat-grid-4">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Tagihan</div>
+          <div class="stat-card-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Belum Bayar</div>
+          <div class="stat-card-value" id="statUnpaid" style="color:var(--admin-danger)">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Menunggu Konfirmasi</div>
+          <div class="stat-card-value" id="statPending" style="color:var(--admin-warning)">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Lunas</div>
+          <div class="stat-card-value" id="statPaid" style="color:var(--admin-success)">0</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Data Pembayaran & Bukti Transfer</h3>
+          <div class="filter-bar">
+            <div class="search-input">
+              <input type="search" class="admin-input" id="searchInput" placeholder="Cari nama, email, program..." />
+            </div>
+            <select class="admin-select" id="filterStatus" style="width:180px;">
+              <option value="">Semua Status</option>
+              <option value="Belum dibayar">Belum Dibayar</option>
+              <option value="Menunggu konfirmasi">Menunggu Konfirmasi</option>
+              <option value="Lunas">Lunas</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Peserta</th>
+                <th>Program</th>
+                <th>Total Tagihan</th>
+                <th>Bukti Transfer</th>
+                <th>Status Pembayaran</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <div class="admin-card-footer">
+          <div class="admin-pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="admin-modal-overlay" id="paymentModal">
+    <div class="admin-modal" style="max-width: 600px;">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title">Detail & Verifikasi Pembayaran</h3>
+        <button class="admin-modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body" id="modalBody"></div>
+      <div class="admin-modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/workflow.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var currentPage = 1;
+      var activePaymentId = null;
+
+      function render() {
+        var allData = window.DemoStorage.getAll();
+        var registrations = allData.registrations || [];
+
+        // Sinkronkan data payments
+        registrations.forEach(function (reg) {
+          window.Workflow.ensurePaymentRecord(allData, reg);
+        });
+
+        var payments = allData.payments || [];
+        var keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+        var statusFilter = document.getElementById('filterStatus').value;
+
+        document.getElementById('statTotal').textContent = payments.length;
+        document.getElementById('statUnpaid').textContent = payments.filter(function (p) { return !p.status || p.status === 'Belum dibayar'; }).length;
+        document.getElementById('statPending').textContent = payments.filter(function (p) { return p.status === 'Menunggu konfirmasi'; }).length;
+        document.getElementById('statPaid').textContent = payments.filter(function (p) { return p.status === 'Lunas'; }).length;
+
+        var filtered = payments.filter(function (p) {
+          var text = [p.name, p.email, p.programName].filter(Boolean).join(' ').toLowerCase();
+          var ps = p.status || 'Belum dibayar';
+          return (!keyword || text.indexOf(keyword) !== -1) && (!statusFilter || ps === statusFilter);
+        }).sort(function (a, b) { return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt); });
+
+        var pag = AdminUI.paginate(filtered, currentPage, 10);
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (pag.items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada data pembayaran.</td></tr>';
+          document.getElementById('pagination').innerHTML = '';
+          return;
+        }
+
+        pag.items.forEach(function (pay) {
+          var tr = document.createElement('tr');
+          var ps = pay.status || 'Belum dibayar';
+          var proofHtml = pay.proof
+            ? '<span class="badge-status badge-process">' + AdminUI.escapeHTML(pay.proof) + '</span>'
+            : '<span class="text-muted fs-xs">Belum upload</span>';
+
+          tr.innerHTML =
+            '<td><div class="cell-main">' + AdminUI.escapeHTML(pay.name || '-') + '</div><div class="cell-sub">' + AdminUI.escapeHTML(pay.email || '-') + '</div></td>' +
+            '<td><div class="cell-main">' + AdminUI.escapeHTML(pay.programName || '-') + '</div><div class="cell-sub">' + AdminUI.escapeHTML(pay.category || '-') + '</div></td>' +
+            '<td><strong style="color:var(--admin-primary);">' + AdminUI.formatCurrency(pay.amount || 0) + '</strong></td>' +
+            '<td>' + proofHtml + '</td>' +
+            '<td>' + AdminUI.statusBadge(ps) + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="showPaymentModal(\'' + pay.registrationId + '\')">Periksa</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+
+        AdminUI.renderPagination(document.getElementById('pagination'), pag, function (p) { currentPage = p; render(); });
+      }
+
+      window.showPaymentModal = function (regId) {
+        activePaymentId = regId;
+        var allData = window.DemoStorage.getAll();
+        var reg = (allData.registrations || []).find(function (r) { return r.id === regId; });
+        if (!reg) return;
+
+        var pay = (allData.payments || []).find(function (p) { return p.registrationId === regId; }) || {};
+
+        var body = document.getElementById('modalBody');
+        body.innerHTML =
+          '<div class="detail-grid" style="margin-bottom:16px;">' +
+            '<div class="detail-item"><div class="detail-label">Nama Peserta</div><div class="detail-value fw-600">' + AdminUI.escapeHTML(reg.name || '-') + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Email</div><div class="detail-value">' + AdminUI.escapeHTML(reg.email || '-') + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Program</div><div class="detail-value">' + AdminUI.escapeHTML(reg.programName || '-') + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Kategori</div><div class="detail-value">' + AdminUI.escapeHTML(reg.category || '-') + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Biaya Pendaftaran</div><div class="detail-value">' + AdminUI.formatCurrency(pay.registrationFee || 0) + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Biaya Pendidikan</div><div class="detail-value">' + AdminUI.formatCurrency(pay.tuitionFee || 0) + '</div></div>' +
+            '<div class="detail-item detail-full"><div class="detail-label">Total Tagihan</div><div class="detail-value fw-700" style="font-size:1.1rem;color:var(--admin-primary);">' + AdminUI.formatCurrency(pay.amount || 0) + '</div></div>' +
+          '</div>' +
+
+          '<div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid var(--admin-border);margin-bottom:16px;">' +
+            '<div class="detail-label" style="margin-bottom:6px;">Bukti Transfer yang Diunggah:</div>' +
+            (pay.proof ?
+              '<div style="display:flex;align-items:center;gap:10px;"><div><strong class="text-primary">' + AdminUI.escapeHTML(pay.proof) + '</strong><div class="fs-xs text-muted">Diunggah: ' + AdminUI.formatDateTime(pay.submittedAt) + '</div></div></div>'
+              : '<div class="text-muted">Peserta belum mengunggah bukti pembayaran.</div>') +
+          '</div>' +
+
+          (reg.paymentRejectionReason ?
+            '<div class="admin-alert admin-alert-danger mb-md"><strong>Alasan penolakan sebelumnya:</strong> ' + AdminUI.escapeHTML(reg.paymentRejectionReason) + '</div>'
+            : '') +
+
+          '<div class="form-group">' +
+            '<label class="admin-label">Status Pembayaran Terkini</label>' +
+            '<div>' + AdminUI.statusBadge(pay.status || 'Belum dibayar') + '</div>' +
+          '</div>';
+
+        var footer = document.getElementById('modalFooter');
+        footer.innerHTML =
+          '<button class="btn-admin btn-admin-outline" onclick="closeModal()">Tutup</button>' +
+          (pay.status !== 'Lunas' ?
+            '<button class="btn-admin btn-admin-danger" onclick="promptReject(\'' + regId + '\')">Tolak Bukti</button>' +
+            '<button class="btn-admin btn-admin-success" onclick="verifyDirect(\'' + regId + '\')">Verifikasi (Lunas)</button>'
+            : '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="promptReject(\'' + regId + '\')">Batalkan Lunas</button>');
+
+        document.getElementById('paymentModal').classList.add('show');
+      };
+
+      window.verifyDirect = function (regId) {
+        var allData = window.DemoStorage.getAll();
+        window.Workflow.setPaymentStatus(allData, regId, 'Lunas', {
+          note: 'Pembayaran diverifikasi dan dinyatakan lunas oleh admin.'
+        });
+        window.DemoStorage.saveAll(allData);
+        closeModal();
+        render();
+        AdminUI.showAlert('Pembayaran berhasil diverifikasi menjadi Lunas.', 'success');
+      };
+
+      window.promptReject = function (regId) {
+        var reason = prompt('Masukkan alasan penolakan bukti pembayaran:');
+        if (!reason || !reason.trim()) return;
+
+        var allData = window.DemoStorage.getAll();
+        window.Workflow.setPaymentStatus(allData, regId, 'Belum dibayar', {
+          reason: reason.trim(),
+          note: 'Ditolak admin: ' + reason.trim()
+        });
+        window.DemoStorage.saveAll(allData);
+        closeModal();
+        render();
+        AdminUI.showAlert('Pembayaran ditolak. Calon siswa diminta upload ulang bukti.', 'danger');
+      };
+
+      window.closeModal = function () {
+        document.getElementById('paymentModal').classList.remove('show');
+        activePaymentId = null;
+      };
+
+      document.getElementById('paymentModal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal();
+      });
+
+      document.getElementById('searchInput').addEventListener('input', function () { currentPage = 1; render(); });
+      document.getElementById('filterStatus').addEventListener('change', function () { currentPage = 1; render(); });
+      window.addEventListener('demo-data-updated', render);
+      window.addEventListener('storage', render);
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konten Website — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Konten Website</h1>
+      <div class="admin-header-actions">
+        <a href="../../index.html" target="_blank" rel="noopener" class="btn-admin btn-admin-outline btn-admin-sm">Lihat Website</a>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="website-content-grid">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Identitas &amp; Konten Utama</h3>
+          </div>
+          <div class="admin-card-body">
+            <form id="websiteContentForm">
+              <div class="form-section-title">Identitas Lembaga</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="admin-label" for="inputSiteName">Nama Lembaga</label>
+                  <input type="text" class="admin-input" id="inputSiteName" />
+                </div>
+                <div class="form-group">
+                  <label class="admin-label" for="inputTagline">Tagline</label>
+                  <input type="text" class="admin-input" id="inputTagline" />
+                </div>
+              </div>
+
+              <div class="form-section-title">Hero Halaman Utama</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="admin-label" for="inputHeroTitle">Judul Utama</label>
+                  <input type="text" class="admin-input" id="inputHeroTitle" />
+                </div>
+                <div class="form-group">
+                  <label class="admin-label" for="inputHeroAccent">Bagian Judul Berwarna</label>
+                  <input type="text" class="admin-input" id="inputHeroAccent" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="admin-label" for="inputHeroDescription">Deskripsi Hero</label>
+                <textarea class="admin-textarea" id="inputHeroDescription" rows="3"></textarea>
+              </div>
+
+              <div class="form-section-title">Tentang Kami</div>
+              <div class="form-group">
+                <label class="admin-label" for="inputAboutTitle">Judul Bagian Tentang</label>
+                <input type="text" class="admin-input" id="inputAboutTitle" />
+              </div>
+              <div class="form-group">
+                <label class="admin-label" for="inputAboutDescription">Deskripsi Tentang</label>
+                <textarea class="admin-textarea" id="inputAboutDescription" rows="4"></textarea>
+              </div>
+
+              <div class="form-section-title">Kontak</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="admin-label" for="inputContactAddress">Alamat</label>
+                  <input type="text" class="admin-input" id="inputContactAddress" />
+                </div>
+                <div class="form-group">
+                  <label class="admin-label" for="inputContactPhone">Telepon / WhatsApp</label>
+                  <input type="text" class="admin-input" id="inputContactPhone" />
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="admin-label" for="inputContactEmail">Email</label>
+                  <input type="email" class="admin-input" id="inputContactEmail" />
+                </div>
+                <div class="form-group">
+                  <label class="admin-label" for="inputContactHours">Jam Layanan</label>
+                  <input type="text" class="admin-input" id="inputContactHours" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="admin-label" for="inputFooterNote">Catatan Footer</label>
+                <input type="text" class="admin-input" id="inputFooterNote" />
+              </div>
+
+              <div class="form-section-title">Rekening Pembayaran & Petunjuk</div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="admin-label" for="inputPaymentBank">Nama Bank / Metode</label>
+                  <input type="text" class="admin-input" id="inputPaymentBank" placeholder="Contoh: BCA / BRI / Mandiri" />
+                </div>
+                <div class="form-group">
+                  <label class="admin-label" for="inputPaymentAccount">Nomor Rekening</label>
+                  <input type="text" class="admin-input" id="inputPaymentAccount" placeholder="Contoh: 1234567890" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="admin-label" for="inputPaymentHolder">Nama Pemilik Rekening (a.n.)</label>
+                <input type="text" class="admin-input" id="inputPaymentHolder" placeholder="Contoh: PKBM & LPK Mandiri" />
+              </div>
+              <div class="form-group">
+                <label class="admin-label" for="inputPaymentInstructions">Petunjuk Pembayaran untuk Peserta</label>
+                <textarea class="admin-textarea" id="inputPaymentInstructions" rows="3" placeholder="Petunjuk langkah transfer untuk calon siswa"></textarea>
+              </div>
+
+              <div class="d-flex flex-wrap gap-sm mt-md">
+                <button type="submit" class="btn-admin btn-admin-primary">Simpan Konten</button>
+                <button type="button" class="btn-admin btn-admin-outline" onclick="resetContent()">Muat Contoh Awal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="admin-card website-preview-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Pratinjau</h3>
+            <span class="badge-status badge-process">Halaman Utama</span>
+          </div>
+          <div class="admin-card-body">
+            <div class="website-preview-hero">
+              <p class="website-preview-eyebrow" id="previewTagline">Tagline</p>
+              <h2 class="website-preview-title">
+                <span id="previewHeroTitle">Judul utama</span>
+                <span class="preview-accent" id="previewHeroAccent">aksen</span>
+              </h2>
+              <p class="website-preview-text" id="previewHeroDescription">Deskripsi hero.</p>
+              <div class="website-preview-actions">
+                <span class="preview-button">Mulai Pendaftaran</span>
+                <span class="preview-button preview-button-outline">Lihat Program</span>
+              </div>
+            </div>
+
+            <div class="website-preview-section">
+              <h3 id="previewAboutTitle">Judul tentang</h3>
+              <p id="previewAboutDescription">Deskripsi tentang.</p>
+            </div>
+
+            <div class="website-preview-section">
+              <h3>Kontak</h3>
+              <ul class="website-preview-contact">
+                <li><span>Alamat</span><strong id="previewContactAddress">-</strong></li>
+                <li><span>Telepon</span><strong id="previewContactPhone">-</strong></li>
+                <li><span>Email</span><strong id="previewContactEmail">-</strong></li>
+                <li><span>Jam</span><strong id="previewContactHours">-</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var FIELDS = [
+        ['inputSiteName', 'siteName'],
+        ['inputTagline', 'tagline'],
+        ['inputHeroTitle', 'heroTitle'],
+        ['inputHeroAccent', 'heroAccent'],
+        ['inputHeroDescription', 'heroDescription'],
+        ['inputAboutTitle', 'aboutTitle'],
+        ['inputAboutDescription', 'aboutDescription'],
+        ['inputContactAddress', 'contactAddress'],
+        ['inputContactPhone', 'contactPhone'],
+        ['inputContactEmail', 'contactEmail'],
+        ['inputContactHours', 'contactHours'],
+        ['inputFooterNote', 'footerNote'],
+        ['inputPaymentBank', 'paymentBank'],
+        ['inputPaymentAccount', 'paymentAccount'],
+        ['inputPaymentHolder', 'paymentHolder'],
+        ['inputPaymentInstructions', 'paymentInstructions']
+      ];
+
+      var PREVIEWS = {
+        siteName: 'previewSiteName',
+        tagline: 'previewTagline',
+        heroTitle: 'previewHeroTitle',
+        heroAccent: 'previewHeroAccent',
+        heroDescription: 'previewHeroDescription',
+        aboutTitle: 'previewAboutTitle',
+        aboutDescription: 'previewAboutDescription',
+        contactAddress: 'previewContactAddress',
+        contactPhone: 'previewContactPhone',
+        contactEmail: 'previewContactEmail',
+        contactHours: 'previewContactHours'
+      };
+
+      function getContent() {
+        var data = window.DemoStorage.getAll();
+        return data.websiteContent || {};
+      }
+
+      function setField(id, value) {
+        var input = document.getElementById(id);
+
+        if (input) {
+          input.value = value || '';
+        }
+      }
+
+      function updatePreview() {
+        Object.keys(PREVIEWS).forEach(function (key) {
+          var input = document.getElementById('input' + key.charAt(0).toUpperCase() + key.slice(1));
+          var preview = document.getElementById(PREVIEWS[key]);
+
+          if (preview) {
+            var value = input ? input.value.trim() : '';
+            preview.textContent = value || '—';
+          }
+        });
+      }
+
+      function loadContent(content) {
+        FIELDS.forEach(function (field) {
+          setField(field[0], content[field[1]]);
+        });
+
+        updatePreview();
+      }
+
+      window.resetContent = function () {
+        if (!AdminUI.confirm('Muat ulang contoh konten awal? Perubahan yang belum disimpan akan hilang.')) {
+          return;
+        }
+
+        loadContent(window.DEMO_SEED.websiteContent || {});
+        AdminUI.showAlert('Contoh konten dimuat. Klik "Simpan Konten" untuk menerapkan.', 'info');
+      };
+
+      document.getElementById('websiteContentForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var data = window.DemoStorage.getAll();
+        var content = {};
+
+        FIELDS.forEach(function (field) {
+          content[field[1]] = document.getElementById(field[0]).value.trim();
+        });
+
+        if (!content.siteName) {
+          AdminUI.showAlert('Nama lembaga wajib diisi.', 'danger');
+          return;
+        }
+
+        data.websiteContent = content;
+        window.DemoStorage.saveAll(data);
+
+        AdminUI.showAlert('Konten website berhasil disimpan.', 'success');
+        updatePreview();
+      });
+
+      FIELDS.forEach(function (field) {
+        var input = document.getElementById(field[0]);
+
+        if (input) {
+          input.addEventListener('input', updatePreview);
+        }
+      });
+
+      loadContent(getContent());
+    })();
+  </script>
+</body>
+</html>

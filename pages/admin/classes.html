@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kelas — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand"><span class="sidebar-brand-icon" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span></a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="sidebar-user-avatar">A</div><div class="sidebar-user-info"><div class="sidebar-user-name">Admin Demo</div><div class="sidebar-user-role">Administrator</div></div></div></div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+      <h1 class="admin-header-title">Kelola Kelas</h1>
+      <div class="admin-header-actions">
+        <button class="btn-admin btn-admin-primary btn-admin-sm" onclick="showAddModal()">+ Tambah Kelas</button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="admin-card">
+        <div class="admin-card-header">
+          <h3 class="admin-card-title">Daftar Kelas</h3>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nama Kelas</th>
+                <th>Program</th>
+                <th>Tahun Akademik</th>
+                <th>Wali Kelas</th>
+                <th>Jumlah Siswa</th>
+                <th>Status</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="admin-modal-overlay" id="classModal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="modalTitle">Tambah Kelas</h3>
+        <button class="admin-modal-close" onclick="closeClassModal()">&times;</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="form-group">
+          <label class="admin-label">Nama Kelas *</label>
+          <input type="text" class="admin-input" id="inputName" placeholder="Contoh: Kelas A - Paket C" />
+        </div>
+        <div class="form-group">
+          <label class="admin-label">Program *</label>
+          <select class="admin-select" id="inputProgram"></select>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="admin-label">Tahun Akademik</label>
+            <input type="text" class="admin-input" id="inputYear" placeholder="2026/2027" />
+          </div>
+          <div class="form-group">
+            <label class="admin-label">Wali Kelas</label>
+            <input type="text" class="admin-input" id="inputTeacher" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="admin-label">Status</label>
+          <select class="admin-select" id="inputActive">
+            <option value="true">Aktif</option>
+            <option value="false">Tidak Aktif</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button class="btn-admin btn-admin-outline" onclick="closeClassModal()">Batal</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveClass()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var editingId = null;
+      var programs = window.DemoStorage.getCollection('programs');
+
+      document.getElementById('inputProgram').innerHTML = programs.map(function (p) {
+        return '<option value="' + p.id + '">' + AdminUI.escapeHTML(p.name) + '</option>';
+      }).join('');
+
+      function render() {
+        var allData = window.DemoStorage.getAll();
+        if (!allData.classes) allData.classes = [];
+        var classes = allData.classes;
+        var students = allData.students || [];
+        var tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+
+        if (classes.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center" style="padding:40px;color:var(--admin-muted);">Belum ada kelas. Klik "+ Tambah Kelas" untuk memulai.</td></tr>';
+          return;
+        }
+
+        classes.forEach(function (cls) {
+          var prog = programs.find(function (p) { return p.id === cls.programId; });
+          var count = students.filter(function (s) { return s.classId === cls.id; }).length;
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td class="cell-main">' + AdminUI.escapeHTML(cls.name) + '</td>' +
+            '<td>' + AdminUI.escapeHTML(prog ? prog.name : '-') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(cls.academicYear || '-') + '</td>' +
+            '<td>' + AdminUI.escapeHTML(cls.teacherName || '-') + '</td>' +
+            '<td class="text-center">' + count + '</td>' +
+            '<td>' + (cls.active !== false ? '<span class="badge-status badge-active"><span class="badge-dot"></span>Aktif</span>' : '<span class="badge-status badge-inactive"><span class="badge-dot"></span>Tidak Aktif</span>') + '</td>' +
+            '<td style="text-align:center;">' +
+              '<button class="btn-admin btn-admin-outline btn-admin-sm" onclick="editClass(\'' + cls.id + '\')" style="margin-right:4px;">Edit</button>' +
+              '<button class="btn-admin btn-admin-danger btn-admin-sm" onclick="deleteClass(\'' + cls.id + '\')">Hapus</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.showAddModal = function () {
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Tambah Kelas';
+        document.getElementById('inputName').value = '';
+        document.getElementById('inputYear').value = '';
+        document.getElementById('inputTeacher').value = '';
+        document.getElementById('inputActive').value = 'true';
+        document.getElementById('classModal').classList.add('show');
+      };
+
+      window.editClass = function (id) {
+        var allData = window.DemoStorage.getAll();
+        var cls = (allData.classes || []).find(function (c) { return c.id === id; });
+        if (!cls) return;
+        editingId = id;
+        document.getElementById('modalTitle').textContent = 'Edit Kelas';
+        document.getElementById('inputName').value = cls.name || '';
+        document.getElementById('inputProgram').value = cls.programId || '';
+        document.getElementById('inputYear').value = cls.academicYear || '';
+        document.getElementById('inputTeacher').value = cls.teacherName || '';
+        document.getElementById('inputActive').value = String(cls.active !== false);
+        document.getElementById('classModal').classList.add('show');
+      };
+
+      window.saveClass = function () {
+        var name = document.getElementById('inputName').value.trim();
+        if (!name) { AdminUI.showAlert('Nama kelas wajib diisi.', 'danger'); return; }
+        var allData = window.DemoStorage.getAll();
+        if (!allData.classes) allData.classes = [];
+
+        var obj = {
+          name: name,
+          programId: document.getElementById('inputProgram').value,
+          academicYear: document.getElementById('inputYear').value.trim(),
+          teacherName: document.getElementById('inputTeacher').value.trim(),
+          active: document.getElementById('inputActive').value === 'true'
+        };
+
+        if (editingId) {
+          var cls = allData.classes.find(function (c) { return c.id === editingId; });
+          if (cls) Object.assign(cls, obj);
+        } else {
+          obj.id = 'class-' + Date.now();
+          allData.classes.push(obj);
+        }
+
+        window.DemoStorage.saveAll(allData);
+        closeClassModal();
+        render();
+        AdminUI.showAlert(editingId ? 'Kelas diperbarui.' : 'Kelas baru ditambahkan.', 'success');
+      };
+
+      window.deleteClass = function (id) {
+        if (!AdminUI.confirm('Hapus kelas ini?')) return;
+        var allData = window.DemoStorage.getAll();
+        allData.classes = (allData.classes || []).filter(function (c) { return c.id !== id; });
+        window.DemoStorage.saveAll(allData);
+        render();
+        AdminUI.showAlert('Kelas dihapus.', 'success');
+      };
+
+      window.closeClassModal = function () {
+        document.getElementById('classModal').classList.remove('show');
+        editingId = null;
+      };
+
+      document.getElementById('classModal').addEventListener('click', function (e) { if (e.target === this) closeClassModal(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

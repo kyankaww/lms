@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pendaftaran Program - PKBM & LPK</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html"><span class="brand-mark" data-brand-mark>P</span> <span data-brand-name>PKBM &amp; LPK</span></a>
+
+        <a href="dashboard.html" class="btn btn-outline-primary btn-sm">
+          Dashboard
+        </a>
+      </div>
+    </nav>
+
+    <main class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="mb-4">
+            <span class="badge text-bg-primary mb-2">
+              Pendaftaran Peserta
+            </span>
+
+            <h1 class="h3 fw-bold">Daftar Program Pendidikan</h1>
+
+            <p class="text-muted">
+              Pilih program yang sesuai dengan kebutuhan pendidikan atau
+              pelatihan keterampilanmu.
+            </p>
+          </div>
+
+          <div id="alertArea"></div>
+
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <div id="programLoading" class="text-muted">
+                Memuat informasi program...
+              </div>
+
+              <div id="programNotFound" class="alert alert-warning d-none">
+                Program tidak ditemukan atau sedang tidak aktif.
+                <a href="../index.html">Kembali ke halaman utama</a>.
+              </div>
+
+              <div id="programContent" class="d-none">
+                <div class="rounded bg-light p-3 mb-4">
+                  <div class="small text-muted mb-1">Program yang dipilih</div>
+
+                  <h2 class="h4 fw-bold mb-2" id="programName"></h2>
+
+                  <div class="mb-2">
+                    <span
+                      class="badge text-bg-primary"
+                      id="programCategory"
+                    ></span>
+                    <span
+                      class="badge text-bg-secondary"
+                      id="programLevel"
+                    ></span>
+                  </div>
+
+                  <p class="mb-0 text-muted" id="programDescription"></p>
+                </div>
+
+                <div id="accountNotice" class="alert alert-info d-none">
+                  Kamu perlu login terlebih dahulu sebelum mengajukan
+                  pendaftaran program.
+                  <div class="mt-2">
+                    <a
+                      href="login.html"
+                      id="loginLink"
+                      class="btn btn-primary btn-sm"
+                    >
+                      Login
+                    </a>
+
+                    <a
+                      href="registration.html"
+                      id="registerLink"
+                      class="btn btn-outline-primary btn-sm"
+                    >
+                      Buat Akun
+                    </a>
+                  </div>
+                </div>
+
+                <div id="profileNotice" class="alert alert-warning d-none">
+                  Lengkapi data diri sebelum mendaftar program.
+
+                  <div class="mt-2">
+                    <a href="data-diri.html" class="btn btn-warning btn-sm">
+                      Lengkapi Data Diri
+                    </a>
+                  </div>
+                </div>
+
+                <form id="programRegistrationForm" class="d-none">
+                  <div class="mb-3">
+                    <label for="registrationNote" class="form-label">
+                      Catatan tambahan
+                      <span class="text-muted">(opsional)</span>
+                    </label>
+
+                    <textarea
+                      id="registrationNote"
+                      class="form-control"
+                      rows="3"
+                      maxlength="500"
+                      placeholder="Tuliskan informasi tambahan jika diperlukan."
+                    ></textarea>
+                  </div>
+
+                  <div class="form-check mb-4">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="confirmRegistration"
+                      required
+                    />
+
+                    <label for="confirmRegistration" class="form-check-label">
+                      Saya memastikan program yang dipilih sudah benar.
+                    </label>
+
+                    <div class="invalid-feedback">
+                      Kamu perlu mengonfirmasi pilihan program.
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                    id="btnSubmitProgram"
+                  >
+                    Ajukan Pendaftaran
+                  </button>
+                </form>
+
+                <div
+                  id="existingRegistration"
+                  class="alert alert-secondary d-none"
+                >
+                  <div class="fw-semibold mb-1">
+                    Kamu sudah memiliki pendaftaran untuk program ini.
+                  </div>
+
+                  <div>
+                    Status:
+                    <span
+                      id="existingRegistrationStatus"
+                      class="fw-semibold"
+                    ></span>
+                  </div>
+
+                  <a
+                    href="dashboard.html"
+                    class="btn btn-outline-primary btn-sm mt-3"
+                  >
+                    Lihat Dashboard
+                  </a>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <a href="../index.html" class="text-decoration-none">
+                  ← Kembali ke halaman utama
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../assets/js/mock-data.js"></script>
+    <script src="../assets/js/storage.js"></script>
+    <script src="../assets/js/branding.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/workflow.js"></script>
+    <script src="../assets/js/app.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        "use strict";
+
+        const params = new URLSearchParams(window.location.search);
+        const programId = params.get("program");
+
+        const loading = document.getElementById("programLoading");
+        const notFound = document.getElementById("programNotFound");
+        const content = document.getElementById("programContent");
+        const accountNotice = document.getElementById("accountNotice");
+        const profileNotice = document.getElementById("profileNotice");
+        const form = document.getElementById("programRegistrationForm");
+        const existingBox = document.getElementById("existingRegistration");
+
+        function getCurrentEmail() {
+          if (window.Auth) {
+            const user = window.Auth.getCurrentUser();
+            return user.loggedIn ? user.email : "";
+          }
+
+          if (localStorage.getItem("demoLoggedIn") === "true") {
+            return (localStorage.getItem("registerEmail") || "")
+              .trim()
+              .toLowerCase();
+          }
+
+          return "";
+        }
+
+        function hasCompleteProfile() {
+          if (window.Auth) {
+            return window.Auth.hasCompleteProfile();
+          }
+
+          return localStorage.getItem("dataDiriLengkap") === "true";
+        }
+
+        function renderPage() {
+          const programs = window.DemoStorage.getCollection("programs");
+
+          const program = programs.find(function (item) {
+            return item.id === programId && item.active === true;
+          });
+
+          loading.classList.add("d-none");
+
+          if (!program) {
+            notFound.classList.remove("d-none");
+            content.classList.add("d-none");
+            return;
+          }
+
+          content.classList.remove("d-none");
+
+          document.getElementById("programName").textContent = program.name;
+          document.getElementById("programCategory").textContent =
+            program.category;
+          document.getElementById("programLevel").textContent = program.level;
+          document.getElementById("programDescription").textContent =
+            program.description;
+
+          const email = getCurrentEmail();
+
+          if (!email) {
+            accountNotice.classList.remove("d-none");
+            form.classList.add("d-none");
+
+            const loginLink = document.getElementById("loginLink");
+            const registerLink = document.getElementById("registerLink");
+            const profileLink = profileNotice.querySelector("a");
+
+            const returnUrl =
+              "pendaftaran-program.html?program=" +
+              encodeURIComponent(program.id);
+
+            const redirectParam = encodeURIComponent(returnUrl);
+
+            loginLink.href = "login.html?redirect=" + redirectParam;
+            registerLink.href = "registration.html?redirect=" + redirectParam;
+
+            if (profileLink) {
+              profileLink.href = "data-diri.html?redirect=" + redirectParam;
+            }
+
+            return;
+          }
+
+          accountNotice.classList.add("d-none");
+
+          if (!hasCompleteProfile()) {
+            profileNotice.classList.remove("d-none");
+            form.classList.add("d-none");
+
+            const profileLink = profileNotice.querySelector("a");
+            const returnUrl =
+              "pendaftaran-program.html?program=" +
+              encodeURIComponent(program.id);
+
+            if (profileLink) {
+              profileLink.href =
+                "data-diri.html?redirect=" +
+                encodeURIComponent(returnUrl);
+            }
+
+            return;
+          }
+
+          profileNotice.classList.add("d-none");
+
+          const registrations =
+            window.DemoStorage.getCollection("registrations");
+
+          const existing = registrations.find(function (item) {
+            return (
+              item.email &&
+              item.email.trim().toLowerCase() === email &&
+              item.programId === program.id
+            );
+          });
+
+          if (existing) {
+            existingBox.classList.remove("d-none");
+            form.classList.add("d-none");
+
+            document.getElementById("existingRegistrationStatus").textContent =
+              existing.status || "Menunggu verifikasi";
+
+            return;
+          }
+
+          existingBox.classList.add("d-none");
+          form.classList.remove("d-none");
+        }
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          if (!form.checkValidity()) {
+            form.classList.add("was-validated");
+            return;
+          }
+
+          const email = getCurrentEmail();
+
+          if (!email) {
+            accountNotice.classList.remove("d-none");
+            form.classList.add("d-none");
+            return;
+          }
+
+          const allData = window.DemoStorage.getAll();
+
+          const program = allData.programs.find(function (item) {
+            return item.id === programId && item.active === true;
+          });
+
+          if (!program) {
+            alert("Program tidak ditemukan.");
+            return;
+          }
+
+          const alreadyRegistered = allData.registrations.some(function (item) {
+            return (
+              item.email &&
+              item.email.trim().toLowerCase() === email &&
+              item.programId === program.id
+            );
+          });
+
+          if (alreadyRegistered) {
+            renderPage();
+            return;
+          }
+
+          const user = window.Auth
+            ? window.Auth.getCurrentUser()
+            : { name: localStorage.getItem("registerName") || "Pengguna" };
+
+          const profile = window.Workflow ? window.Workflow.getProfile(allData, email) : null;
+          const fullName = (profile && profile.namaLengkap) || (user && user.name) || (localStorage.getItem("registerName")) || "Peserta";
+
+          const registrationFee = Number(program.registrationFee) || 0;
+          const tuitionFee = Number(program.tuitionFee) || 0;
+
+          if (!Array.isArray(allData.registrations)) {
+            allData.registrations = [];
+          }
+
+          const registration = {
+            id: "reg-" + Date.now(),
+            email: email,
+            name: fullName,
+            programId: program.id,
+            programName: program.name,
+            category: program.category,
+            note: document.getElementById("registrationNote").value.trim(),
+            status: "Menunggu verifikasi",
+            paymentStatus: "Belum dibayar",
+            registrationFee: registrationFee,
+            tuitionFee: tuitionFee,
+            totalAmount: registrationFee + tuitionFee,
+            createdAt: new Date().toISOString(),
+            statusHistory: [],
+          };
+
+          allData.registrations.push(registration);
+
+          if (window.Workflow) {
+            window.Workflow.ensurePaymentRecord(allData, registration);
+          }
+
+          window.DemoStorage.saveAll(allData);
+
+          alert(
+            "Pendaftaran program berhasil diajukan! Silakan lanjutkan pembayaran.",
+          );
+
+          window.location.href =
+            "pembayaran.html?id=" + encodeURIComponent(registration.id);
+        });
+
+        renderPage();
+
+        window.addEventListener("demo-data-updated", renderPage);
+        window.addEventListener("storage", renderPage);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bantuan — Admin PKBM & LPK</title>
+  <link rel="stylesheet" href="../../assets/css/admin.css" />
+</head>
+<body class="admin-body" data-page-access="admin">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="admin-sidebar" id="adminSidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <span class="sidebar-brand-icon" data-brand-mark>P</span>
+      <span data-brand-name>PKBM &amp; LPK</span>
+    </a>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><span class="nav-icon"></span> Dashboard</a></li>
+      <li class="sidebar-section">Pendaftaran</li>
+      <li><a href="registrations.html"><span class="nav-icon"></span> Pendaftaran</a></li>
+      <li><a href="payments.html"><span class="nav-icon"></span> Pembayaran</a></li>
+      <li class="sidebar-section">Akademik</li>
+      <li><a href="students.html"><span class="nav-icon"></span> Peserta Didik</a></li>
+      <li><a href="teachers.html"><span class="nav-icon"></span> Pengajar</a></li>
+      <li><a href="programs.html"><span class="nav-icon"></span> Program</a></li>
+      <li><a href="classes.html"><span class="nav-icon"></span> Kelas</a></li>
+      <li><a href="subjects.html"><span class="nav-icon"></span> Mata Pelajaran</a></li>
+      <li><a href="schedules.html"><span class="nav-icon"></span> Jadwal</a></li>
+      <li><a href="attendance.html"><span class="nav-icon"></span> Kehadiran</a></li>
+      <li class="sidebar-section">Lainnya</li>
+      <li><a href="announcements.html"><span class="nav-icon"></span> Pengumuman</a></li>
+      <li><a href="website-content.html"><span class="nav-icon"></span> Konten Website</a></li>
+      <li><a href="users.html"><span class="nav-icon"></span> Pengguna</a></li>
+      <li><a href="help.html"><span class="nav-icon"></span> Bantuan</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin Demo</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-header">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Buka navigasi">☰</button>
+      <h1 class="admin-header-title">Bantuan</h1>
+      <div class="admin-header-actions">
+        <a href="../dashboard.html" class="btn-admin btn-admin-outline btn-admin-sm">Portal Peserta</a>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <div id="alertContainer"></div>
+
+      <div class="help-hero">
+        <div>
+          <span class="help-eyebrow">Pusat Bantuan</span>
+          <h2>Panduan singkat pengelolaan sistem</h2>
+          <p>Gunakan panel admin untuk mengelola pendaftaran, akademik, konten website, dan akun pengguna. Semua data pada prototype ini tersimpan di penyimpanan lokal browser.</p>
+        </div>
+        <a href="dashboard.html" class="btn-admin btn-admin-primary">Kembali ke Dashboard</a>
+      </div>
+
+      <div class="help-grid">
+        <a href="registrations.html" class="help-card">
+          <span class="help-card-icon stat-icon-primary">📋</span>
+          <h3>Verifikasi Pendaftaran</h3>
+          <p>Tinjau pendaftar, ubah status, dan terima peserta untuk membuat data siswa serta tagihan.</p>
+        </a>
+        <a href="payments.html" class="help-card">
+          <span class="help-card-icon stat-icon-warning">💰</span>
+          <h3>Verifikasi Pembayaran</h3>
+          <p>Periksa bukti transfer, tandai lunas, atau tolak dengan alasan yang jelas.</p>
+        </a>
+        <a href="schedules.html" class="help-card">
+          <span class="help-card-icon stat-icon-success">📅</span>
+          <h3>Atur Jadwal</h3>
+          <p>Hubungkan kelas, mata pelajaran, pengajar, ruang, dan waktu pembelajaran.</p>
+        </a>
+        <a href="attendance.html" class="help-card">
+          <span class="help-card-icon stat-icon-info">✅</span>
+          <h3>Catat Kehadiran</h3>
+          <p>Input kehadiran per kelas dan tanggal, lalu pantau rekap hadir, izin, sakit, dan alpa.</p>
+        </a>
+        <a href="announcements.html" class="help-card">
+          <span class="help-card-icon stat-icon-primary">📢</span>
+          <h3>Publikasi Pengumuman</h3>
+          <p>Pengumuman aktif otomatis tampil pada bagian pengumuman di halaman utama.</p>
+        </a>
+        <a href="website-content.html" class="help-card">
+          <span class="help-card-icon stat-icon-success">🌐</span>
+          <h3>Ubah Konten Website</h3>
+          <p>Sesuaikan nama lembaga, tagline, hero, tentang, dan informasi kontak.</p>
+        </a>
+      </div>
+
+      <div class="help-two-column">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Pertanyaan yang Sering Diajukan</h3>
+          </div>
+          <div class="admin-card-body">
+            <details class="help-faq" open>
+              <summary>Bagaimana cara menerima pendaftar menjadi siswa?</summary>
+              <p>Buka menu <strong>Pendaftaran</strong>, klik detail pada baris pendaftar, ubah status menjadi <strong>Diterima</strong>, lalu simpan. Sistem otomatis membuat data siswa dan tagihan pembayaran.</p>
+            </details>
+            <details class="help-faq">
+              <summary>Mengapa data kembali ke contoh awal?</summary>
+              <p>Data demo akan direset ketika versi data awal (seed) diperbarui. Ini menjaga agar contoh data selalu sesuai dengan fitur terbaru.</p>
+            </details>
+            <details class="help-faq">
+              <summary>Apakah file dokumen benar-benar tersimpan?</summary>
+              <p>Belum. Prototype ini hanya menyimpan nama file pada penyimpanan lokal browser. Penyimpanan file sebenarnya memerlukan backend atau layanan object storage.</p>
+            </details>
+            <details class="help-faq">
+              <summary>Bagaimana menonaktifkan akun peserta?</summary>
+              <p>Buka menu <strong>Pengguna</strong>, klik <strong>Nonaktifkan</strong>. Peserta dengan status tidak aktif tidak dapat masuk kembali ke portal. Akun admin utama dilindungi.</p>
+            </details>
+            <details class="help-faq">
+              <summary>Apakah data ini aman untuk produksi?</summary>
+              <p>Tidak. Autentikasi, password, dan data masih disimulasikan di frontend. Untuk produksi diperlukan backend, validasi server, serta penyimpanan data yang aman.</p>
+            </details>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3 class="admin-card-title">Informasi Sistem</h3>
+          </div>
+          <div class="admin-card-body">
+            <ul class="help-info-list">
+              <li><span>Versi data demo</span><strong id="infoVersion">-</strong></li>
+              <li><span>Kunci penyimpanan</span><strong><code>pkbmLpkDemoData</code></strong></li>
+              <li><span>Pendaftaran</span><strong id="infoRegistrations">0</strong></li>
+              <li><span>Peserta didik</span><strong id="infoStudents">0</strong></li>
+              <li><span>Pengajar</span><strong id="infoTeachers">0</strong></li>
+              <li><span>Jadwal</span><strong id="infoSchedules">0</strong></li>
+              <li><span>Catatan kehadiran</span><strong id="infoAttendance">0</strong></li>
+              <li><span>Pengumuman</span><strong id="infoAnnouncements">0</strong></li>
+              <li><span>Pengguna</span><strong id="infoUsers">0</strong></li>
+            </ul>
+
+            <div class="help-actions">
+              <button class="btn-admin btn-admin-outline" onclick="exportData()">Ekspor Data JSON</button>
+              <button class="btn-admin btn-admin-danger" onclick="resetDemoData()">Reset Data Demo</button>
+            </div>
+
+            <div class="admin-alert admin-alert-warning mt-md mb-0">
+              <div>
+                <strong>Akun demo admin:</strong><br />
+                <code>admin@pkbm.test</code> / <code>admin123</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/mock-data.js"></script>
+  <script src="../../assets/js/storage.js"></script>
+  <script src="../../assets/js/branding.js"></script>
+  <script src="../../assets/js/auth.js"></script>
+  <script src="../../assets/js/admin-ui.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      function renderInfo() {
+        var data = window.DemoStorage.getAll();
+
+        document.getElementById('infoVersion').textContent = String(window.DEMO_SEED.version || '-');
+        document.getElementById('infoRegistrations').textContent = (data.registrations || []).length;
+        document.getElementById('infoStudents').textContent = (data.students || []).length;
+        document.getElementById('infoTeachers').textContent = (data.teachers || []).length;
+        document.getElementById('infoSchedules').textContent = (data.schedules || []).length;
+        document.getElementById('infoAttendance').textContent = (data.attendance || []).length;
+        document.getElementById('infoAnnouncements').textContent = (data.announcements || []).length;
+        document.getElementById('infoUsers').textContent = (data.users || []).length;
+      }
+
+      window.exportData = function () {
+        var data = window.DemoStorage.getAll();
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+
+        link.href = url;
+        link.download = 'data-demo-pkbm-lpk.json';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+
+        AdminUI.showAlert('Data demo berhasil diekspor.', 'success');
+      };
+
+      window.resetDemoData = function () {
+        if (!AdminUI.confirm('Reset semua data demo ke kondisi awal? Tindakan ini tidak dapat dibatalkan.')) {
+          return;
+        }
+
+        window.DemoStorage.reset();
+        renderInfo();
+        AdminUI.showAlert('Data demo berhasil direset ke kondisi awal.', 'success');
+      };
+
+      window.addEventListener('demo-data-updated', renderInfo);
+
+      renderInfo();
+    })();
+  </script>
+</body>
+</html>
